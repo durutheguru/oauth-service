@@ -18,8 +18,11 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.authentication.OAuth2AuthenticationValidator;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
@@ -27,6 +30,7 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationProvider;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -102,7 +106,20 @@ public class AuthorizationServerConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
-         return new JdbcRegisteredClientRepository(jdbcTemplate);
+         var repository = new JdbcRegisteredClientRepository(jdbcTemplate);
+
+        repository.save(
+            RegisteredClient.withId(UUID.randomUUID().toString())
+            .clientId("test-java-client")
+            .clientSecret("{noop}123456")
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+            .redirectUri("https://oidcdebugger.com/debug")
+            .scope(OidcScopes.OPENID)
+            .build()
+        );
+
+         return repository;
     }
 
 
@@ -145,6 +162,7 @@ public class AuthorizationServerConfig {
     }
 
 
+    //TODO: modify this bean to include proper implementation
     @Bean
     UserDetailsService users() {
         var user = User.withDefaultPasswordEncoder()
@@ -152,14 +170,15 @@ public class AuthorizationServerConfig {
             .password("password")
             .authorities(new SimpleGrantedAuthority("USER"))
             .build();
+
         return new InMemoryUserDetailsManager(user);
     }
 
 
     private static RSAKey generateRsa() throws NoSuchAlgorithmException {
-        KeyPair keyPair = generateRsaKey();
-        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+        var keyPair = generateRsaKey();
+        var publicKey = (RSAPublicKey) keyPair.getPublic();
+        var privateKey = (RSAPrivateKey) keyPair.getPrivate();
 
         return new RSAKey.Builder(publicKey)
             .privateKey(privateKey)
@@ -169,7 +188,7 @@ public class AuthorizationServerConfig {
 
 
     private static KeyPair generateRsaKey() throws NoSuchAlgorithmException {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        var keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         keyPairGenerator.initialize(2048);
 
         return keyPairGenerator.generateKeyPair();

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="dduru (generated)" id="1649893837300-1">
+        <createTable tableName="oauth2_authorization">
+            <column name="id" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registered_client_id" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="principal_name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authorization_grant_type" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attributes" type="BLOB"/>
+            <column name="state" type="VARCHAR(500)"/>
+            <column name="authorization_code_value" type="BLOB"/>
+            <column name="authorization_code_issued_at" type="TIMESTAMP(19)"/>
+            <column name="authorization_code_expires_at" type="TIMESTAMP(19)"/>
+            <column name="authorization_code_metadata" type="BLOB"/>
+            <column name="access_token_value" type="BLOB"/>
+            <column name="access_token_issued_at" type="TIMESTAMP(19)"/>
+            <column name="access_token_expires_at" type="TIMESTAMP(19)"/>
+            <column name="access_token_metadata" type="BLOB"/>
+            <column name="access_token_type" type="VARCHAR(100)"/>
+            <column name="access_token_scopes" type="VARCHAR(1000)"/>
+            <column name="oidc_id_token_value" type="BLOB"/>
+            <column name="oidc_id_token_issued_at" type="TIMESTAMP(19)"/>
+            <column name="oidc_id_token_expires_at" type="TIMESTAMP(19)"/>
+            <column name="oidc_id_token_metadata" type="BLOB"/>
+            <column name="refresh_token_value" type="BLOB"/>
+            <column name="refresh_token_issued_at" type="TIMESTAMP(19)"/>
+            <column name="refresh_token_expires_at" type="TIMESTAMP(19)"/>
+            <column name="refresh_token_metadata" type="BLOB"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="dduru (generated)" id="1649893837300-2">
+        <createTable tableName="oauth2_authorization_consent">
+            <column name="registered_client_id" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="principal_name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authorities" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="dduru (generated)" id="1649893837300-3">
+        <createTable tableName="oauth2_registered_client">
+            <column name="id" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_id" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="client_id_issued_at" type="TIMESTAMP(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_secret" type="VARCHAR(200)"/>
+            <column name="client_secret_expires_at" type="TIMESTAMP(19)"/>
+            <column name="client_name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_authentication_methods" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authorization_grant_types" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="redirect_uris" type="VARCHAR(1000)"/>
+            <column name="scopes" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_settings" type="VARCHAR(2000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token_settings" type="VARCHAR(2000)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="dduru (generated)" id="1649893837300-4">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="oauth2_authorization"/>
+    </changeSet>
+
+    <changeSet author="dduru (generated)" id="1649893837300-5">
+        <addPrimaryKey columnNames="registered_client_id, principal_name" constraintName="PRIMARY" tableName="oauth2_authorization_consent"/>
+    </changeSet>
+
+    <changeSet author="dduru (generated)" id="1649893837300-6">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="oauth2_registered_client"/>
+    </changeSet>
+
+</databaseChangeLog>
+

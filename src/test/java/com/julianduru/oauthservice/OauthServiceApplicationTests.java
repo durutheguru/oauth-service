@@ -1,13 +1,20 @@
 package com.julianduru.oauthservice;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest
-class OauthServiceApplicationTests {
+@ExtendWith({SpringExtension.class})
+public class OauthServiceApplicationTests {
+
 
 	@Test
-	void contextLoads() {
+	public void contextLoads() {
 	}
+
+
 
 }
