@@ -6,7 +6,7 @@ package com.julianduru.oauthservice;
 public interface AuthServerConstants {
 
 
-    public static String API_VERSION = "/api/v1";
+    String API_VERSION = "/api/v1";
 
 
 }

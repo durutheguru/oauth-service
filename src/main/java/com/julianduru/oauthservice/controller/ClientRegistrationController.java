@@ -5,7 +5,6 @@ import com.julianduru.oauthservice.dto.RegisteredClientDto;
 import com.julianduru.oauthservice.exception.RuntimeServiceException;
 import com.julianduru.oauthservice.modules.client.ClientService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,3 +38,4 @@ public class ClientRegistrationController {
 
 
 }
+

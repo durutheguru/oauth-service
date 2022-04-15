@@ -18,22 +18,22 @@
             <column name="attributes" type="BLOB"/>
             <column name="state" type="VARCHAR(500)"/>
             <column name="authorization_code_value" type="BLOB"/>
-            <column name="authorization_code_issued_at" type="TIMESTAMP(19)"/>
-            <column name="authorization_code_expires_at" type="TIMESTAMP(19)"/>
+            <column name="authorization_code_issued_at" type="TIMESTAMP"/>
+            <column name="authorization_code_expires_at" type="TIMESTAMP"/>
             <column name="authorization_code_metadata" type="BLOB"/>
             <column name="access_token_value" type="BLOB"/>
-            <column name="access_token_issued_at" type="TIMESTAMP(19)"/>
-            <column name="access_token_expires_at" type="TIMESTAMP(19)"/>
+            <column name="access_token_issued_at" type="TIMESTAMP"/>
+            <column name="access_token_expires_at" type="TIMESTAMP"/>
             <column name="access_token_metadata" type="BLOB"/>
             <column name="access_token_type" type="VARCHAR(100)"/>
             <column name="access_token_scopes" type="VARCHAR(1000)"/>
             <column name="oidc_id_token_value" type="BLOB"/>
-            <column name="oidc_id_token_issued_at" type="TIMESTAMP(19)"/>
-            <column name="oidc_id_token_expires_at" type="TIMESTAMP(19)"/>
+            <column name="oidc_id_token_issued_at" type="TIMESTAMP"/>
+            <column name="oidc_id_token_expires_at" type="TIMESTAMP"/>
             <column name="oidc_id_token_metadata" type="BLOB"/>
             <column name="refresh_token_value" type="BLOB"/>
-            <column name="refresh_token_issued_at" type="TIMESTAMP(19)"/>
-            <column name="refresh_token_expires_at" type="TIMESTAMP(19)"/>
+            <column name="refresh_token_issued_at" type="TIMESTAMP"/>
+            <column name="refresh_token_expires_at" type="TIMESTAMP"/>
             <column name="refresh_token_metadata" type="BLOB"/>
         </createTable>
     </changeSet>
@@ -60,11 +60,11 @@
             <column name="client_id" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="client_id_issued_at" type="TIMESTAMP(19)">
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="client_id_issued_at" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
             <column name="client_secret" type="VARCHAR(200)"/>
-            <column name="client_secret_expires_at" type="TIMESTAMP(19)"/>
+            <column name="client_secret_expires_at" type="TIMESTAMP"/>
             <column name="client_name" type="VARCHAR(200)">
                 <constraints nullable="false"/>
             </column>

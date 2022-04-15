@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfigurati
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @SpringBootApplication(
-	exclude = {
-		LiquibaseAutoConfiguration.class,
-	}
+//	exclude = {
+//		LiquibaseAutoConfiguration.class,
+//	}
 )
 @EnableWebSecurity
 public class OauthServiceApplication {
