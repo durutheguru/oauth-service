@@ -1,5 +1,7 @@
 package com.julianduru.oauthservice.modules.client;
 
+import com.julianduru.oauthservice.dto.ClientDto;
+import com.julianduru.oauthservice.dto.NewRegisteringClientDto;
 import com.julianduru.oauthservice.dto.RegisteredClientDto;
 import com.julianduru.oauthservice.modules.config.RegisteringClientConfigurer;
 import com.julianduru.util.MapperUtil;
@@ -24,16 +26,19 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Override
-    public RegisteredClientDto registerClient(RegisteredClientDto clientDto) {
-        clientDto = clientConfigurer.init(clientDto);
+    public ClientDto registerClient(NewRegisteringClientDto newClientDto) {
+        var clientDto = clientConfigurer.init(newClientDto.toRegisteredClientDto());
+        var registeredClient = clientDto.mapToNewEntity();
 
-        var registeredClient = MapperUtil.map(clientDto, RegisteredClient.class);
         clientRepository.save(registeredClient);
 
-        return MapperUtil.map(registeredClient, RegisteredClientDto.class);
+        // TODO: email dispatch of credentials to admin email ...
+
+        return ClientDto.fromRegisteredClient(registeredClient);
     }
 
 
 }
+
 
 

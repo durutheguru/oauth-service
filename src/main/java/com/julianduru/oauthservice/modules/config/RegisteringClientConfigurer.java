@@ -39,7 +39,7 @@ public interface RegisteringClientConfigurer {
         if (CollectionUtils.isEmpty(clientDto.getAuthorizationGrantTypes())) {
             clientDto.setAuthorizationGrantTypes(this.authorizationGrantTypes());
         }
-        
+
         return clientDto;
     }
 

@@ -1,5 +1,6 @@
 package com.julianduru.oauthservice.modules.config;
 
+import com.julianduru.oauthservice.dto.RegisteredClientDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -9,7 +10,9 @@ import org.springframework.security.oauth2.server.authorization.config.TokenSett
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * created by julian on 13/04/2022
@@ -24,6 +27,10 @@ public class DefaultRegisteringClientConfigurer implements RegisteringClientConf
 
     @Value("${oauth-service.config.refresh-token-time-to-live}")
     private Long refreshTokenTimeToLive;
+
+
+    @Value("${oauth-service.config.client-secret-time-to-live}")
+    private Long clientSecretTimeToLive;
 
 
 
@@ -45,6 +52,8 @@ public class DefaultRegisteringClientConfigurer implements RegisteringClientConf
     @Override
     public ClientSettings clientSettings() {
         return ClientSettings.builder()
+            .requireProofKey(false)
+            .requireAuthorizationConsent(true)
             .build();
     }
 
@@ -58,7 +67,20 @@ public class DefaultRegisteringClientConfigurer implements RegisteringClientConf
             .build();
     }
 
+    @Override
+    public RegisteredClientDto init(RegisteredClientDto clientDto) {
+        RegisteringClientConfigurer.super.init(clientDto);
+
+        clientDto.setClientId(UUID.randomUUID().toString());
+        clientDto.setClientIdIssuedAt(Instant.now());
+        clientDto.setClientSecret(UUID.randomUUID() + UUID.randomUUID().toString());
+        clientDto.setClientSecretExpiresAt(Instant.now().plusSeconds(clientSecretTimeToLive));
+
+        return clientDto;
+    }
+
 
 }
+
 
 
