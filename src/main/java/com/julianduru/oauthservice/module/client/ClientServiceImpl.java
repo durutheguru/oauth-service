@@ -1,12 +1,9 @@
-package com.julianduru.oauthservice.modules.client;
+package com.julianduru.oauthservice.module.client;
 
 import com.julianduru.oauthservice.dto.ClientDto;
 import com.julianduru.oauthservice.dto.NewRegisteringClientDto;
-import com.julianduru.oauthservice.dto.RegisteredClientDto;
-import com.julianduru.oauthservice.modules.config.RegisteringClientConfigurer;
-import com.julianduru.util.MapperUtil;
+import com.julianduru.oauthservice.module.config.RegisteringClientConfigurer;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.stereotype.Service;
 

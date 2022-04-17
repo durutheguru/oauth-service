@@ -1,8 +1,7 @@
-package com.julianduru.oauthservice.modules.client;
+package com.julianduru.oauthservice.module.client;
 
 import com.julianduru.oauthservice.dto.ClientDto;
 import com.julianduru.oauthservice.dto.NewRegisteringClientDto;
-import com.julianduru.oauthservice.dto.RegisteredClientDto;
 
 /**
  * created by julian on 13/04/2022

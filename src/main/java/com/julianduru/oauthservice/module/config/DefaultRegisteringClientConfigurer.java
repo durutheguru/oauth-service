@@ -1,4 +1,4 @@
-package com.julianduru.oauthservice.modules.config;
+package com.julianduru.oauthservice.module.config;
 
 import com.julianduru.oauthservice.dto.RegisteredClientDto;
 import org.springframework.beans.factory.annotation.Value;

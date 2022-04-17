@@ -1,12 +1,15 @@
 package com.julianduru.oauthservice.controller;
 
+import com.julianduru.oauthservice.AuthServerConstants;
 import com.julianduru.oauthservice.data.NewRegisteringClientDtoProvider;
+import com.julianduru.oauthservice.data.RegisteredClientProvider;
 import com.julianduru.oauthservice.dto.ClientDto;
 import com.julianduru.util.JSONUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -16,11 +19,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * created by julian on 15/04/2022
  */
+@ActiveProfiles({"local-mysql"})
 public class ClientRegistrationControllerTest extends BaseControllerTest {
 
 
     @Autowired
     private NewRegisteringClientDtoProvider registeringClientDtoProvider;
+
+
+    @Autowired
+    private RegisteredClientProvider registeredClientProvider;
 
 
     @Autowired
@@ -48,6 +56,18 @@ public class ClientRegistrationControllerTest extends BaseControllerTest {
                 assertThat(persistedClient.getClientName()).isEqualTo(clientDto.getClientName());
             });
     }
+
+
+//    @Test
+//    public void testRegisteredClientAuthorization() throws Exception {
+//        var client = registeredClientProvider.provide();
+//        clientRepository.save(client);
+//
+//        mockMvc.perform(
+//            post(AuthServerConstants.DEFAULT_AUTHORIZATION_ENDPOINT_URI)
+//                .content(JSONUtil.asJsonString(clientDto))
+//        ).andDo(print());
+//    }
 
 
 }
