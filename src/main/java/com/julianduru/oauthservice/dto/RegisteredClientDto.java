@@ -1,6 +1,7 @@
 package com.julianduru.oauthservice.dto;
 
 import lombok.Data;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
@@ -44,12 +45,12 @@ public class RegisteredClientDto {
     private TokenSettings tokenSettings;
 
 
-    public RegisteredClient mapToNewEntity() {
+    public RegisteredClient mapToNewEntity(PasswordEncoder encoder) {
         return RegisteredClient.withId(UUID.randomUUID().toString())
             .clientName(clientName)
             .clientId(clientId)
             .clientIdIssuedAt(clientIdIssuedAt)
-            .clientSecret(clientSecret)
+            .clientSecret(encoder.encode(clientSecret))
             .clientSecretExpiresAt(clientSecretExpiresAt)
             .redirectUris(
                 uris -> {

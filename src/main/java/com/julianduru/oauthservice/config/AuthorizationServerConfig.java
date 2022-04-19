@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.authentication.OAuth2AuthenticationValidator;
@@ -74,8 +75,7 @@ public class AuthorizationServerConfig {
                 requests -> requests.anyRequest().authenticated()
             )
             .csrf(csrf -> csrf.ignoringRequestMatchers(endpointMatcher))
-            .authorizeRequests()
-            .and().formLogin().loginPage("/login")
+            .formLogin().loginPage("/login")
             .and()
             .apply(configurer);
     }
@@ -154,8 +154,9 @@ public class AuthorizationServerConfig {
 
     //TODO: modify this bean to include proper implementation
     @Bean
-    public UserDetailsService users() {
-        var user = User.withDefaultPasswordEncoder()
+    public UserDetailsService users(PasswordEncoder passwordEncoder) {
+        var user = User.builder()
+            .passwordEncoder(passwordEncoder::encode)
             .username("admin")
             .password("password")
             .authorities(new SimpleGrantedAuthority("USER"))

@@ -1,5 +1,6 @@
 package com.julianduru.oauthservice.module.config;
 
+import com.julianduru.oauthservice.Scopes;
 import com.julianduru.oauthservice.dto.RegisteredClientDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -48,6 +49,13 @@ public class DefaultRegisteringClientConfigurer implements RegisteringClientConf
             AuthorizationGrantType.JWT_BEARER
         );
     }
+
+
+    @Override
+    public Set<String> scopes() {
+        return Set.of(Scopes.READ);
+    }
+
 
     @Override
     public ClientSettings clientSettings() {

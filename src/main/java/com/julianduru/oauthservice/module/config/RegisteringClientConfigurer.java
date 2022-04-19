@@ -18,6 +18,8 @@ public interface RegisteringClientConfigurer {
 
     Set<AuthorizationGrantType> authorizationGrantTypes();
 
+    Set<String> scopes();
+
     ClientSettings clientSettings();
 
     TokenSettings tokenSettings();
@@ -38,6 +40,10 @@ public interface RegisteringClientConfigurer {
 
         if (CollectionUtils.isEmpty(clientDto.getAuthorizationGrantTypes())) {
             clientDto.setAuthorizationGrantTypes(this.authorizationGrantTypes());
+        }
+
+        if (CollectionUtils.isEmpty(clientDto.getScopes())) {
+            clientDto.setScopes(this.scopes());
         }
 
         return clientDto;

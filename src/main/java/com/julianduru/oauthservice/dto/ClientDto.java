@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 @Data
 public class ClientDto {
 
+
     private String id;
 
 
@@ -28,6 +29,18 @@ public class ClientDto {
         dto.setClientId(client.getClientId());
         dto.setClientSecret(client.getClientSecret());
         dto.setClientName(client.getClientName());
+
+        return dto;
+    }
+
+
+    public static ClientDto fromRegisteredClient(RegisteredClientDto clientDto) {
+        var dto = new ClientDto();
+
+        dto.setId(clientDto.getId());
+        dto.setClientId(clientDto.getClientId());
+        dto.setClientSecret(clientDto.getClientSecret());
+        dto.setClientName(clientDto.getClientName());
 
         return dto;
     }

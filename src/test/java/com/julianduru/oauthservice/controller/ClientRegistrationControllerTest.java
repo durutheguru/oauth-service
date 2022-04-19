@@ -1,6 +1,5 @@
 package com.julianduru.oauthservice.controller;
 
-import com.julianduru.oauthservice.AuthServerConstants;
 import com.julianduru.oauthservice.data.NewRegisteringClientDtoProvider;
 import com.julianduru.oauthservice.data.RegisteredClientProvider;
 import com.julianduru.oauthservice.dto.ClientDto;
@@ -15,6 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 /**
  * created by julian on 15/04/2022

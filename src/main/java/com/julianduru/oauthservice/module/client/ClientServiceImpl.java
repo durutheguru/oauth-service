@@ -4,6 +4,8 @@ import com.julianduru.oauthservice.dto.ClientDto;
 import com.julianduru.oauthservice.dto.NewRegisteringClientDto;
 import com.julianduru.oauthservice.module.config.RegisteringClientConfigurer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +23,19 @@ public class ClientServiceImpl implements ClientService {
     private final RegisteringClientConfigurer clientConfigurer;
 
 
+    private final PasswordEncoder passwordEncoder;
+
+
 
     @Override
     public ClientDto registerClient(NewRegisteringClientDto newClientDto) {
         var clientDto = clientConfigurer.init(newClientDto.toRegisteredClientDto());
-        var registeredClient = clientDto.mapToNewEntity();
-
+        var registeredClient = clientDto.mapToNewEntity(passwordEncoder);
         clientRepository.save(registeredClient);
 
         // TODO: email dispatch of credentials to admin email ...
 
-        return ClientDto.fromRegisteredClient(registeredClient);
+        return ClientDto.fromRegisteredClient(clientDto);
     }
 
 
