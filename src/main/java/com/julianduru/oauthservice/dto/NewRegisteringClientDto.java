@@ -1,5 +1,6 @@
 package com.julianduru.oauthservice.dto;
 
+import com.julianduru.util.validation.URLCollection;
 import lombok.Data;
 import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
@@ -19,6 +20,7 @@ public class NewRegisteringClientDto {
     private String clientName;
 
 
+    @URLCollection(message = "Redirect URIs must be valid URL pattern")
     @NotEmpty(message = "Client Redirect URI must be provided")
     private Set<String> redirectUris;
 

@@ -22,21 +22,19 @@ public class SecurityConfiguration {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeRequests(authorizeRequests -> {
-                    try {
-                        authorizeRequests
-                            .and()
-                            .cors().and().csrf().disable()
-                            .authorizeRequests()
-                            .antMatchers(ClientRegistrationController.PATH).permitAll()
-                            .and()
-                            .authorizeRequests()
-                            .anyRequest().authenticated();
-                    }
-                    catch (Throwable t) {
-                        log.error("Error during Security Filter Chain configuration", t);
-                    }
+                try {
+                    authorizeRequests
+                        .and()
+                        .cors().and().csrf().disable()
+                        .authorizeRequests()
+                        .antMatchers(ClientRegistrationController.PATH).permitAll()
+                        .and()
+                        .authorizeRequests()
+                        .anyRequest().authenticated();
+                } catch (Throwable t) {
+                    log.error("Error during Security Filter Chain configuration", t);
                 }
-            )
+            })
             .formLogin(Customizer.withDefaults());
 
         return http.build();

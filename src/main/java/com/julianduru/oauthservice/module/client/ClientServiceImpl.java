@@ -31,7 +31,9 @@ public class ClientServiceImpl implements ClientService {
     public ClientDto registerClient(NewRegisteringClientDto newClientDto) {
         var clientDto = clientConfigurer.init(newClientDto.toRegisteredClientDto());
         var registeredClient = clientDto.mapToNewEntity(passwordEncoder);
+
         clientRepository.save(registeredClient);
+        clientDto.setId(registeredClient.getId());
 
         // TODO: email dispatch of credentials to admin email ...
 

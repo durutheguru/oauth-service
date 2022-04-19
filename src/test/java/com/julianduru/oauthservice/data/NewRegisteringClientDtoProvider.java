@@ -24,7 +24,7 @@ public class NewRegisteringClientDtoProvider implements DataProvider<NewRegister
         var dto = new NewRegisteringClientDto();
 
         dto.setClientName(faker.name().firstName() + " Client");
-        dto.setRedirectUris(Set.of(faker.internet().url()));
+        dto.setRedirectUris(Set.of("http://" + faker.internet().url()));
         dto.setTokenSettingsMap(
             Map.of(
                 ConfigurationSettingNames.Token.ACCESS_TOKEN_TIME_TO_LIVE,
