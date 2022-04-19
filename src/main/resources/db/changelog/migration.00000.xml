@@ -99,5 +99,11 @@
         <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="oauth2_registered_client"/>
     </changeSet>
 
+    <changeSet  author="dduru"  id="1650189385000-1">
+        <addUniqueConstraint columnNames="client_id" constraintName="UNIQUE_registered_client_id_03fa7b9a-905f-4b59"
+              tableName="oauth2_registered_client" />
+    </changeSet>
+
 </databaseChangeLog>
+
 

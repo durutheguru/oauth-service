@@ -13,11 +13,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.authentication.OAuth2AuthenticationValidator;
@@ -72,8 +74,9 @@ public class AuthorizationServerConfig {
             .authorizeRequests(
                 requests -> requests.anyRequest().authenticated()
             )
-            .formLogin(Customizer.withDefaults())
             .csrf(csrf -> csrf.ignoringRequestMatchers(endpointMatcher))
+            .formLogin().loginPage("/login")
+            .and()
             .apply(configurer);
     }
 
@@ -106,20 +109,7 @@ public class AuthorizationServerConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
-         var repository = new JdbcRegisteredClientRepository(jdbcTemplate);
-
-        repository.save(
-            RegisteredClient.withId(UUID.randomUUID().toString())
-            .clientId("test-java-client")
-            .clientSecret("{noop}123456")
-            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-            .redirectUri("https://oidcdebugger.com/debug")
-            .scope(OidcScopes.OPENID)
-            .build()
-        );
-
-         return repository;
+         return new JdbcRegisteredClientRepository(jdbcTemplate);
     }
 
 
@@ -164,8 +154,9 @@ public class AuthorizationServerConfig {
 
     //TODO: modify this bean to include proper implementation
     @Bean
-    UserDetailsService users() {
-        var user = User.withDefaultPasswordEncoder()
+    public UserDetailsService users(PasswordEncoder passwordEncoder) {
+        var user = User.builder()
+            .passwordEncoder(passwordEncoder::encode)
             .username("admin")
             .password("password")
             .authorities(new SimpleGrantedAuthority("USER"))
@@ -196,4 +187,5 @@ public class AuthorizationServerConfig {
 
 
 }
+
 

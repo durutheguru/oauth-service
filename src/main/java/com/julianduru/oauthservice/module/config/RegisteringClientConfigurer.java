@@ -1,4 +1,4 @@
-package com.julianduru.oauthservice.modules.config;
+package com.julianduru.oauthservice.module.config;
 
 import com.julianduru.oauthservice.dto.RegisteredClientDto;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -17,6 +17,8 @@ public interface RegisteringClientConfigurer {
     ClientAuthenticationMethod clientAuthenticationMethod();
 
     Set<AuthorizationGrantType> authorizationGrantTypes();
+
+    Set<String> scopes();
 
     ClientSettings clientSettings();
 
@@ -39,8 +41,13 @@ public interface RegisteringClientConfigurer {
         if (CollectionUtils.isEmpty(clientDto.getAuthorizationGrantTypes())) {
             clientDto.setAuthorizationGrantTypes(this.authorizationGrantTypes());
         }
-        
+
+        if (CollectionUtils.isEmpty(clientDto.getScopes())) {
+            clientDto.setScopes(this.scopes());
+        }
+
         return clientDto;
     }
 
 }
+
