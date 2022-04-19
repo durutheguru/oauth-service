@@ -1,5 +1,6 @@
 package com.julianduru.oauthservice.config;
 
+import com.julianduru.oauthservice.config.converter.OAuth2AuthorizationCodeRequestAuthenticationConverter;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
