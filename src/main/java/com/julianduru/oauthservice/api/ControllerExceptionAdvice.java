@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 public class ControllerExceptionAdvice extends ResponseEntityExceptionHandler {
 
 
-
     @ExceptionHandler({Exception.class})
     public ResponseEntity<ApiErrorResponse> handleAllExceptions(Exception e) {
         log.error("Controller Exception: " + e.getMessage(), e);
