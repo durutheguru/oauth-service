@@ -58,16 +58,4 @@ public class ClientRegistrationControllerTest extends BaseControllerTest {
     }
 
 
-//    @Test
-//    public void testRegisteredClientAuthorization() throws Exception {
-//        var client = registeredClientProvider.provide();
-//        clientRepository.save(client);
-//
-//        mockMvc.perform(
-//            post(AuthServerConstants.DEFAULT_AUTHORIZATION_ENDPOINT_URI)
-//                .content(JSONUtil.asJsonString(clientDto))
-//        ).andDo(print());
-//    }
-
-
 }

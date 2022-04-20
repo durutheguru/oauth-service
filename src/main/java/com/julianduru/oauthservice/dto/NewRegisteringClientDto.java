@@ -3,9 +3,11 @@ package com.julianduru.oauthservice.dto;
 import com.julianduru.util.validation.URLCollection;
 import lombok.Data;
 import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.config.ConfigurationSettingNames;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 
 import javax.validation.constraints.NotEmpty;
+import java.time.Duration;
 import java.util.Map;
 import java.util.Set;
 
@@ -60,7 +62,32 @@ public class NewRegisteringClientDto {
         }
 
         return TokenSettings.builder().settings(
-            settings -> settings.putAll(tokenSettingsMap)
+            settings -> {
+                settings.putAll(tokenSettingsMap);
+
+                // in case access or refresh tokens are deserialized as Numbers,
+                // they need to be converted to Duration of seconds
+
+                if (settings.containsKey(ConfigurationSettingNames.Token.ACCESS_TOKEN_TIME_TO_LIVE)) {
+                    var value = settings.get(ConfigurationSettingNames.Token.ACCESS_TOKEN_TIME_TO_LIVE);
+                    if (value instanceof Number) {
+                        settings.put(
+                            ConfigurationSettingNames.Token.ACCESS_TOKEN_TIME_TO_LIVE,
+                            Duration.ofSeconds(((Number)value).longValue())
+                        );
+                    }
+                }
+
+                if (settings.containsKey(ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE)) {
+                    var value = settings.get(ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE);
+                    if (value instanceof Number) {
+                        settings.put(
+                            ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE,
+                            Duration.ofSeconds(((Number)value).longValue())
+                        );
+                    }
+                }
+            }
         ).build();
     }
 
