@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * created by julian on 15/04/2022
  */
-@ActiveProfiles({"local-mysql"})
 public class ClientRegistrationControllerTest extends BaseControllerTest {
 
 
