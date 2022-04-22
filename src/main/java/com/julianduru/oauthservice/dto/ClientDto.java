@@ -3,6 +3,8 @@ package com.julianduru.oauthservice.dto;
 import lombok.Data;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
+import java.util.Set;
+
 /**
  * created by julian on 15/04/2022
  */
@@ -22,6 +24,9 @@ public class ClientDto {
     private String clientName;
 
 
+    private Set<String> redirectUris;
+
+
     public static ClientDto fromRegisteredClient(RegisteredClient client) {
         var dto = new ClientDto();
 
@@ -29,6 +34,7 @@ public class ClientDto {
         dto.setClientId(client.getClientId());
         dto.setClientSecret(client.getClientSecret());
         dto.setClientName(client.getClientName());
+        dto.setRedirectUris(client.getRedirectUris());
 
         return dto;
     }
@@ -41,6 +47,7 @@ public class ClientDto {
         dto.setClientId(clientDto.getClientId());
         dto.setClientSecret(clientDto.getClientSecret());
         dto.setClientName(clientDto.getClientName());
+        dto.setRedirectUris(clientDto.getRedirectUris());
 
         return dto;
     }

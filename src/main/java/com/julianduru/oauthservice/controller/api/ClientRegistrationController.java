@@ -1,4 +1,4 @@
-package com.julianduru.oauthservice.controller;
+package com.julianduru.oauthservice.controller.api;
 
 import com.julianduru.oauthservice.AuthServerConstants;
 import com.julianduru.oauthservice.dto.ClientDto;

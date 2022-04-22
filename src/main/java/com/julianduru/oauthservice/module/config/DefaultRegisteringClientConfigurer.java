@@ -53,7 +53,7 @@ public class DefaultRegisteringClientConfigurer implements RegisteringClientConf
 
     @Override
     public Set<String> scopes() {
-        return Set.of(Scopes.READ);
+        return Set.of(Scopes.OPENID, Scopes.READ);
     }
 
 
