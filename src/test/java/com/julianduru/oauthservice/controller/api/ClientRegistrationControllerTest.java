@@ -1,5 +1,7 @@
-package com.julianduru.oauthservice.controller;
+package com.julianduru.oauthservice.controller.api;
 
+import com.julianduru.oauthservice.controller.BaseControllerTest;
+import com.julianduru.oauthservice.controller.api.ClientRegistrationController;
 import com.julianduru.oauthservice.data.NewRegisteringClientDtoProvider;
 import com.julianduru.oauthservice.data.RegisteredClientProvider;
 import com.julianduru.oauthservice.dto.ClientDto;
@@ -8,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

@@ -1,6 +1,6 @@
 package com.julianduru.oauthservice.config;
 
-import com.julianduru.oauthservice.controller.ClientRegistrationController;
+import com.julianduru.oauthservice.controller.api.ClientRegistrationController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.Customizer;
