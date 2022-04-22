@@ -7,12 +7,11 @@ import com.julianduru.oauthservice.data.RegisteredClientProvider;
 import com.julianduru.oauthservice.dto.ClientDto;
 import com.julianduru.oauthservice.module.client.ClientService;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,6 +20,7 @@ import org.testcontainers.shaded.okhttp3.HttpUrl;
 import java.util.Base64;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -68,11 +68,38 @@ public class AuthorizationCodeFlowTest extends BaseControllerTest {
 
 
     @Test
-    public void testFetchingAccessToken() throws Exception {
+    public void testFullAuthorizationCodeFlow() throws Exception {
         var clientDto = clientDtoProvider.provide();
         var client = clientService.registerClient(clientDto);
 
-        testClientRetrievingAccessToken(
+        testFetchingAccessToken(
+            client,
+
+            result -> {
+                var responseString = result.getResponse().getContentAsString();
+                var refreshToken = new JSONObject(responseString).getString("refresh_token");
+
+                mockMvc.perform(
+                        post(AuthServerConstants.DEFAULT_TOKEN_ENDPOINT_URI)
+                            .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(
+                                String.format("%s:%s", client.getClientId(), client.getClientSecret()).getBytes()
+                            ))
+                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .param("grant_type", "refresh_token")
+                            .param("refresh_token", refreshToken)
+                    ).andDo(print())
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(jsonPath("$.access_token", not(empty())))
+                    .andExpect(jsonPath("$.refresh_token", not(empty())))
+                    .andExpect(jsonPath("$.expires_in", notNullValue()))
+                    .andExpect(jsonPath("$.scope", not(empty())));
+            }
+        );
+    }
+
+
+    private void testFetchingAccessToken(ClientDto client, ResultMatcher resultMatcher) throws Exception {
+        testClientRetrievingAuthorizationCode(
             client,
 
             result -> {
@@ -97,14 +124,18 @@ public class AuthorizationCodeFlowTest extends BaseControllerTest {
                             .param("client_id", client.getClientId())
                             .param("redirect_uri", stripQueriesFromRedirectUri(redirectedUrl))
                     ).andDo(print())
-                    .andExpect(status().is2xxSuccessful());
-    //                    .andExpect(jsonPath(""));
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(jsonPath("$.access_token", not(empty())))
+                    .andExpect(jsonPath("$.refresh_token", not(empty())))
+                    .andExpect(jsonPath("$.expires_in", notNullValue()))
+                    .andExpect(jsonPath("$.scope", not(empty())))
+                    .andExpect(resultMatcher);
             }
         );
     }
 
 
-    private void testClientRetrievingAccessToken(ClientDto client, ResultMatcher matcher) throws Exception {
+    private void testClientRetrievingAuthorizationCode(ClientDto client, ResultMatcher matcher) throws Exception {
         mockMvc.perform(
                 post(AuthServerConstants.DEFAULT_AUTHORIZATION_ENDPOINT_URI)
                     .with(SecurityMockMvcRequestPostProcessors.user("admin"))
