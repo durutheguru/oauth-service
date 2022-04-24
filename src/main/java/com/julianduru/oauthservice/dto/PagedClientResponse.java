@@ -1,6 +1,5 @@
-package com.julianduru.oauthservice.graphql.model;
+package com.julianduru.oauthservice.dto;
 
-import com.julianduru.oauthservice.dto.ClientDto;
 import lombok.Data;
 
 import java.util.List;

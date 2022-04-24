@@ -30,25 +30,25 @@ public class ApiErrorResponse extends ApiResponse<String> {
 
 
     public ApiErrorResponse() {
-        super(Status.ERROR, null);
+        super(ApiStatus.ERROR, null);
         initialize();
     }
 
 
     public ApiErrorResponse(String message) {
-        super(Status.ERROR, message);
+        super(ApiStatus.ERROR, message);
         initialize();
     }
 
 
     public ApiErrorResponse(String message, String data) {
-        super(Status.ERROR, message, data);
+        super(ApiStatus.ERROR, message, data);
         initialize();
     }
 
 
     public ApiErrorResponse(Exception exception) {
-        super(Status.ERROR, ApiBodySanitizer.sanitizeMessage(exception));
+        super(ApiStatus.ERROR, ApiBodySanitizer.sanitizeMessage(exception));
         this.exception = exception;
         initialize();
     }
