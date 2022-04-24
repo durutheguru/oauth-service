@@ -1,7 +1,6 @@
 package com.julianduru.oauthservice.controller.api;
 
-import com.julianduru.oauthservice.controller.BaseControllerTest;
-import com.julianduru.oauthservice.controller.api.ClientRegistrationController;
+import com.julianduru.oauthservice.BaseControllerTest;
 import com.julianduru.oauthservice.data.NewRegisteringClientDtoProvider;
 import com.julianduru.oauthservice.data.RegisteredClientProvider;
 import com.julianduru.oauthservice.dto.ClientDto;
@@ -59,3 +58,4 @@ public class ClientRegistrationControllerTest extends BaseControllerTest {
 
 
 }
+
