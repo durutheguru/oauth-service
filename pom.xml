@@ -56,6 +56,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.julianduru</groupId>
+			<artifactId>security-lib</artifactId>
+			<version>0.9.2-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-authorization-server</artifactId>
 			<version>0.2.3</version>

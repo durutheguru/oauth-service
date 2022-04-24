@@ -1,4 +1,4 @@
-package com.julianduru.oauthservice.graphql.model;
+package com.julianduru.oauthservice.dto;
 
 import com.julianduru.util.validation.URLCollection;
 import lombok.Data;

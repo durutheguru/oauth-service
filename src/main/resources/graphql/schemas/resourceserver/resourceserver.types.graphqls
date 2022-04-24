@@ -1,0 +1,27 @@
+
+
+input CreateResourceServer {
+
+    serverId: String!
+    allowedScopes: [String]!
+
+}
+
+
+type ResourceServer {
+
+    id: ID
+    resourceServerId: String!
+    allowedScopes: [String]!
+    status: ServerStatus
+
+}
+
+
+enum ServerStatus {
+    ACTIVE
+    SUSPENDED
+}
+
+
+

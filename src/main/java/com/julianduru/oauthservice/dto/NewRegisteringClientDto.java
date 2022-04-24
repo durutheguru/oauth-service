@@ -1,6 +1,5 @@
 package com.julianduru.oauthservice.dto;
 
-import com.julianduru.oauthservice.graphql.model.NewRegisteringClient;
 import com.julianduru.util.validation.URLCollection;
 import lombok.Data;
 import org.json.JSONObject;
