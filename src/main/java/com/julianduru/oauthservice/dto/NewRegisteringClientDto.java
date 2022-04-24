@@ -1,10 +1,13 @@
 package com.julianduru.oauthservice.dto;
 
+import com.julianduru.oauthservice.graphql.model.NewRegisteringClient;
 import com.julianduru.util.validation.URLCollection;
 import lombok.Data;
+import org.json.JSONObject;
 import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.config.ConfigurationSettingNames;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
+import org.springframework.util.StringUtils;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.Duration;
@@ -31,6 +34,26 @@ public class NewRegisteringClientDto {
 
 
     private Map<String, Object> tokenSettingsMap;
+
+
+    public static NewRegisteringClientDto from(NewRegisteringClient client) {
+        var dto = new NewRegisteringClientDto();
+
+        dto.setClientName(client.getClientName());
+        dto.setRedirectUris(client.getRedirectUris());
+        if (StringUtils.hasText(client.getClientSettingsMap())) {
+            dto.setClientSettingsMap(
+                new JSONObject(client.getClientSettingsMap()).toMap()
+            );
+        }
+        if (StringUtils.hasText(client.getTokenSettingsMap())) {
+            dto.setTokenSettingsMap(
+                new JSONObject(client.getTokenSettingsMap()).toMap()
+            );
+        }
+
+        return dto;
+    }
 
 
     public RegisteredClientDto toRegisteredClientDto() {

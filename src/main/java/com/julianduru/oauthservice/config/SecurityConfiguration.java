@@ -4,6 +4,7 @@ import com.julianduru.oauthservice.controller.api.ClientRegistrationController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,10 +28,13 @@ public class SecurityConfiguration {
                         .and()
                         .cors().and().csrf().disable()
                         .authorizeRequests()
-                        .antMatchers(ClientRegistrationController.PATH).permitAll()
+                        .antMatchers(
+                            ClientRegistrationController.PATH,
+                            "/graphql"
+                        ).permitAll()
                         .and()
                         .authorizeRequests()
-                        .anyRequest().authenticated();
+                        .anyRequest().fullyAuthenticated();
                 } catch (Throwable t) {
                     log.error("Error during Security Filter Chain configuration", t);
                 }

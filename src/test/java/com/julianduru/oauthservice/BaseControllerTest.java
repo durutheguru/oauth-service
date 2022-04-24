@@ -1,6 +1,7 @@
-package com.julianduru.oauthservice.controller;
+package com.julianduru.oauthservice;
 
 import com.github.javafaker.Faker;
+import com.julianduru.oauthservice.config.TestConfig;
 import com.julianduru.oauthservice.config.TestDataSourceConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,8 +20,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ExtendWith({SpringExtension.class})
 @SpringBootTest(
     classes = {
+        TestConfig.class,
         TestDataSourceConfig.class,
-    }
+    },
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @AutoConfigureMockMvc
 public abstract class BaseControllerTest {

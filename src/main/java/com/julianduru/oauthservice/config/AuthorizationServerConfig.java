@@ -13,6 +13,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
@@ -52,6 +53,7 @@ import java.util.function.Function;
  * created by julian on 09/04/2022
  */
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AuthorizationServerConfig {
 
     @Value("${oauth.service.config.issuer.url:http://localhost:8080}")
