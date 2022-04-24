@@ -1,6 +1,6 @@
 
 
-type NewClient {
+type ClientDto {
 
     id: String!
     clientId: String!
@@ -8,6 +8,14 @@ type NewClient {
     clientName: String!
     redirectUris: [String]
 
+}
+
+
+type PagedClientsResponse {
+    page: Int
+    totalElements: Int
+    totalPages: Int
+    clients: [ClientDto]
 }
 
 
