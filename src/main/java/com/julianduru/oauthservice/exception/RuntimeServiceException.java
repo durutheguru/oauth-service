@@ -1,11 +1,17 @@
 package com.julianduru.oauthservice.exception;
 
 import com.julianduru.util.CryptoUtil;
+import graphql.ErrorClassification;
+import graphql.GraphQLError;
+import graphql.language.SourceLocation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+import java.util.Map;
+
 @Slf4j
-public class RuntimeServiceException extends RuntimeException {
+public class RuntimeServiceException extends RuntimeException implements GraphQLError {
 
 
     protected int code = 1000000;
@@ -55,6 +61,24 @@ public class RuntimeServiceException extends RuntimeException {
         }
 
         return message;
+    }
+
+
+    @Override
+    public List<SourceLocation> getLocations() {
+        return null;
+    }
+
+
+    @Override
+    public ErrorClassification getErrorType() {
+        return null;
+    }
+
+
+    @Override
+    public Map<String, Object> getExtensions() {
+        return Map.of("code", getCode());
     }
 
 

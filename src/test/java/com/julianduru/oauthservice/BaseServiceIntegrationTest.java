@@ -1,26 +1,24 @@
 package com.julianduru.oauthservice;
 
+
+import com.julianduru.oauthservice.config.TestConfig;
 import com.julianduru.oauthservice.config.TestDataSourceConfig;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith({SpringExtension.class})
-@Import({
-	TestDataSourceConfig.class
-})
 @SpringBootTest(
-	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+    classes = {
+        TestConfig.class,
+        TestDataSourceConfig.class,
+    },
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-public class OauthServiceApplicationTests {
+public abstract class BaseServiceIntegrationTest {
 
 
-	@Test
-	public void contextLoads() {
-	}
 
 
 

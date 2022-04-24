@@ -1,7 +1,7 @@
 package com.julianduru.oauthservice.controller.web;
 
 import com.julianduru.oauthservice.AuthServerConstants;
-import com.julianduru.oauthservice.controller.BaseControllerTest;
+import com.julianduru.oauthservice.BaseControllerTest;
 import com.julianduru.oauthservice.data.NewRegisteringClientDtoProvider;
 import com.julianduru.oauthservice.data.RegisteredClientProvider;
 import com.julianduru.oauthservice.dto.ClientDto;
