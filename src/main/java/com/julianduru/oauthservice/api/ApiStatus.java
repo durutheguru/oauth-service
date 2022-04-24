@@ -4,7 +4,7 @@ package com.julianduru.oauthservice.api;
 /**
  * created by julian
  */
-public enum Status {
+public enum ApiStatus {
 
     DONE,
 

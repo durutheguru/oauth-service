@@ -1,0 +1,8 @@
+
+
+extend type Mutation {
+
+    registerResourceServer(server: CreateResourceServer!): ResourceServer
+
+}
+

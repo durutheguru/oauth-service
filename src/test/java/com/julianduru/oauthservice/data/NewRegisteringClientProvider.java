@@ -1,6 +1,6 @@
 package com.julianduru.oauthservice.data;
 
-import com.julianduru.oauthservice.graphql.model.NewRegisteringClient;
+import com.julianduru.oauthservice.dto.NewRegisteringClient;
 import com.julianduru.util.test.DataProvider;
 import org.springframework.stereotype.Component;
 
