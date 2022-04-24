@@ -1,0 +1,30 @@
+
+
+type ClientDto {
+
+    id: String!
+    clientId: String!
+    clientSecret: String
+    clientName: String!
+    redirectUris: [String]
+
+}
+
+
+type PagedClientsResponse {
+    page: Int
+    totalElements: Int
+    totalPages: Int
+    clients: [ClientDto]
+}
+
+
+input NewRegisteringClient {
+
+    clientName: String!
+    redirectUris: [String]!
+    clientSettingsMap: String
+    tokenSettingsMap: String
+
+}
+

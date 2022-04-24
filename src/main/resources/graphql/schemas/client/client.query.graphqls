@@ -1,0 +1,7 @@
+
+
+extend type Query {
+    fetchClients(page: Int!, size: Int!): PagedClientsResponse
+}
+
+

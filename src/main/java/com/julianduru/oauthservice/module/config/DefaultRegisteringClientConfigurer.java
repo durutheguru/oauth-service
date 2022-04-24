@@ -60,7 +60,7 @@ public class DefaultRegisteringClientConfigurer implements RegisteringClientConf
     @Override
     public ClientSettings clientSettings() {
         return ClientSettings.builder()
-            .requireProofKey(false)
+            .requireProofKey(true)
             .requireAuthorizationConsent(true)
             .build();
     }
