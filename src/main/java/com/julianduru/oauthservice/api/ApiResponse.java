@@ -8,7 +8,7 @@ package com.julianduru.oauthservice.api;
 public class ApiResponse<T> {
 
 
-    public final Status status;
+    public final ApiStatus status;
 
 
     public final String message;
@@ -17,14 +17,14 @@ public class ApiResponse<T> {
     public final T data;
 
 
-    public ApiResponse(Status status, String message) {
+    public ApiResponse(ApiStatus status, String message) {
         this.status = status;
         this.message = message;
         this.data = null;
     }
 
 
-    public ApiResponse(Status status, String message, T data) {
+    public ApiResponse(ApiStatus status, String message, T data) {
         this.status = status;
         this.message = message;
         this.data = data;

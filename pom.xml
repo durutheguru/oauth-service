@@ -51,8 +51,8 @@
 
 		<dependency>
 			<groupId>com.julianduru</groupId>
-			<artifactId>util-lib</artifactId>
-			<version>0.13.0-SNAPSHOT</version>
+			<artifactId>security-lib</artifactId>
+			<version>0.10.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -225,3 +225,4 @@
 	</build>
 
 </project>
+

@@ -3,7 +3,7 @@ package com.julianduru.oauthservice.graphql.client;
 
 import com.julianduru.oauthservice.dto.ClientDto;
 import com.julianduru.oauthservice.dto.NewRegisteringClientDto;
-import com.julianduru.oauthservice.graphql.model.NewRegisteringClient;
+import com.julianduru.oauthservice.dto.NewRegisteringClient;
 import com.julianduru.oauthservice.module.client.ClientService;
 import com.julianduru.util.ValidatorUtil;
 import graphql.kickstart.tools.GraphQLMutationResolver;
@@ -23,9 +23,7 @@ public class ClientMutationResolver implements GraphQLMutationResolver {
 
     public ClientDto registerClient(NewRegisteringClient client) {
         ValidatorUtil.validate(client);
-
-        var dto = NewRegisteringClientDto.from(client);
-        return clientService.registerClient(dto);
+        return clientService.registerClient(client);
     }
 
 

@@ -1,6 +1,6 @@
 package com.julianduru.oauthservice.graphql.client;
 
-import com.julianduru.oauthservice.graphql.model.PagedClientResponse;
+import com.julianduru.oauthservice.dto.PagedClientResponse;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;

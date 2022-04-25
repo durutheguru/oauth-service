@@ -1,6 +1,7 @@
 package com.julianduru.oauthservice.module.client;
 
 import com.julianduru.oauthservice.dto.ClientDto;
+import com.julianduru.oauthservice.dto.NewRegisteringClient;
 import com.julianduru.oauthservice.dto.NewRegisteringClientDto;
 
 /**
@@ -9,7 +10,7 @@ import com.julianduru.oauthservice.dto.NewRegisteringClientDto;
 public interface ClientService {
 
 
-    ClientDto registerClient(NewRegisteringClientDto clientDto);
+    ClientDto registerClient(NewRegisteringClient client);
 
 
 }
