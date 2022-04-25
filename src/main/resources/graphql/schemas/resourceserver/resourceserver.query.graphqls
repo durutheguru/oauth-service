@@ -1,0 +1,7 @@
+
+
+extend type Query {
+
+    fetchResourceServers(page: Int!, size: Int! = 20): PagedResourceServerList
+
+}
