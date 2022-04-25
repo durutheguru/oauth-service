@@ -24,4 +24,10 @@ enum ServerStatus {
 }
 
 
+type PagedResourceServerList {
+    page: Int
+    totalElements: Int
+    totalPages: Int
+    resourceServers: [ResourceServer]
+}
 
