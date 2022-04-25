@@ -3,8 +3,12 @@ package com.julianduru.oauthservice.controller.web;
 import com.julianduru.oauthservice.AuthServerConstants;
 import com.julianduru.oauthservice.BaseControllerTest;
 import com.julianduru.oauthservice.data.NewRegisteringClientDtoProvider;
+import com.julianduru.oauthservice.data.NewRegisteringClientProvider;
 import com.julianduru.oauthservice.data.RegisteredClientProvider;
+import com.julianduru.oauthservice.data.ResourceServerDataProvider;
 import com.julianduru.oauthservice.dto.ClientDto;
+import com.julianduru.oauthservice.dto.NewRegisteringClient;
+import com.julianduru.oauthservice.entity.ResourceServer;
 import com.julianduru.oauthservice.module.client.ClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -18,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.testcontainers.shaded.okhttp3.HttpUrl;
 
 import java.util.Base64;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -41,7 +46,11 @@ public class AuthorizationCodeFlowTest extends BaseControllerTest {
 
 
     @Autowired
-    private NewRegisteringClientDtoProvider clientDtoProvider;
+    private NewRegisteringClientProvider clientDtoProvider;
+
+
+    @Autowired
+    private ResourceServerDataProvider resourceServerDataProvider;
 
 
     @Autowired
@@ -69,7 +78,28 @@ public class AuthorizationCodeFlowTest extends BaseControllerTest {
 
     @Test
     public void testFullAuthorizationCodeFlow() throws Exception {
-        var clientDto = clientDtoProvider.provide();
+        var resourceId1 = "resource-server-" + faker.code().isbn10(false);
+        var resourceId2 = "resource-server-" + faker.code().isbn10(false);
+
+        var resourceServerSample = new ResourceServer();
+        resourceServerSample.setResourceServerId(resourceId1);
+        resourceServerDataProvider.save(resourceServerSample);
+
+        resourceServerSample = new ResourceServer();
+        resourceServerSample.setResourceServerId(resourceId2);
+        resourceServerDataProvider.save(resourceServerSample);
+
+        var registeringClientSample = new NewRegisteringClient();
+        registeringClientSample.setClientSettingsMap(
+            new JSONObject(
+                Map.of(
+                    AuthServerConstants.ClientTokenSettings.ALLOWED_RESOURCES,
+                    String.format("%s, %s", resourceId1, resourceId2)
+                )
+            ).toString()
+        );
+
+        var clientDto = clientDtoProvider.provide(registeringClientSample);
         var client = clientService.registerClient(clientDto);
 
         testFetchingAccessToken(
@@ -123,7 +153,8 @@ public class AuthorizationCodeFlowTest extends BaseControllerTest {
                             .param("code", code)
                             .param("client_id", client.getClientId())
                             .param("redirect_uri", stripQueriesFromRedirectUri(redirectedUrl))
-                    ).andDo(print())
+                    )
+                    .andDo(print())
                     .andExpect(status().is2xxSuccessful())
                     .andExpect(jsonPath("$.access_token", not(empty())))
                     .andExpect(jsonPath("$.refresh_token", not(empty())))
