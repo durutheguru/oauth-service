@@ -1,5 +1,6 @@
 package com.julianduru.oauthservice.config;
 
+import com.julianduru.oauthservice.AuthServerConstants;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -37,9 +38,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -147,9 +146,15 @@ public class AuthorizationServerConfig {
             if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
                 var client = context.getRegisteredClient();
                 context.getClaims().claims(claims -> {
-                    var auds = (List<String>) claims.get(JwtClaimNames.AUD);
+                    var auds = new ArrayList<>((List<String>) claims.get(JwtClaimNames.AUD));
+                    var clientSettings = client.getClientSettings();
 
-                    //update auds...
+                    if (clientSettings.getSetting(AuthServerConstants.ClientTokenSettings.ALLOWED_RESOURCES) != null) {
+                        var allowedResourcesValue = (String)clientSettings.getSetting(AuthServerConstants.ClientTokenSettings.ALLOWED_RESOURCES);
+                        var allowedResourcesArray = allowedResourcesValue.split("\\s*,\\s*");
+
+                        auds.addAll(Arrays.asList(allowedResourcesArray));
+                    }
 
                     claims.put(JwtClaimNames.AUD, auds);
                 });

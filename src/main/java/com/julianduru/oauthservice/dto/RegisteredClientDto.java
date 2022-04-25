@@ -45,6 +45,12 @@ public class RegisteredClientDto {
     private TokenSettings tokenSettings;
 
 
+    public RegisteredClientDto withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+
     public RegisteredClient mapToNewEntity(PasswordEncoder encoder) {
         return RegisteredClient.withId(UUID.randomUUID().toString())
             .clientName(clientName)
