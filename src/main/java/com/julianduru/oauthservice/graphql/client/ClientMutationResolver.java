@@ -23,9 +23,7 @@ public class ClientMutationResolver implements GraphQLMutationResolver {
 
     public ClientDto registerClient(NewRegisteringClient client) {
         ValidatorUtil.validate(client);
-
-        var dto = NewRegisteringClientDto.from(client);
-        return clientService.registerClient(dto);
+        return clientService.registerClient(client);
     }
 
 
