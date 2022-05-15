@@ -13,6 +13,10 @@ import java.util.Set;
 public class NewRegisteringClient {
 
 
+    @NotEmpty(message = "Client ID is required.")
+    private String clientId;
+
+
     @NotEmpty(message = "Client Name is required. Cannot be empty.")
     private String clientName;
 

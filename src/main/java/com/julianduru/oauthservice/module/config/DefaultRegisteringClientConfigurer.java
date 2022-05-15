@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.core.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -79,7 +80,10 @@ public class DefaultRegisteringClientConfigurer implements RegisteringClientConf
     public RegisteredClientDto init(RegisteredClientDto clientDto) {
         RegisteringClientConfigurer.super.init(clientDto);
 
-        clientDto.setClientId(UUID.randomUUID().toString());
+        if (!StringUtils.hasText(clientDto.getClientId())) {
+            clientDto.setClientId(UUID.randomUUID().toString());
+        }
+
         clientDto.setClientIdIssuedAt(Instant.now());
         clientDto.setClientSecret(UUID.randomUUID() + UUID.randomUUID().toString());
         clientDto.setClientSecretExpiresAt(Instant.now().plusSeconds(clientSecretTimeToLive));

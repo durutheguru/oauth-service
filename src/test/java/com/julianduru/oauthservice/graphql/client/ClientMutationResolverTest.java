@@ -45,6 +45,7 @@ public class ClientMutationResolverTest extends BaseServiceIntegrationTest {
                     """
                     mutation {
                         registerClient(client: {
+                            clientId: "%s",
                             clientName: "%s",
                             redirectUris: [
                                 "%s"
@@ -58,6 +59,7 @@ public class ClientMutationResolverTest extends BaseServiceIntegrationTest {
                         }
                     }
                     """,
+                    clientDto.getClientId(),
                     clientDto.getClientName(),
                     clientDto.getRedirectUris().stream().findAny().get()
                 ), "{}"
@@ -91,6 +93,7 @@ public class ClientMutationResolverTest extends BaseServiceIntegrationTest {
                     """
                     mutation {
                         registerClient(client: {
+                            clientId: "%s",
                             clientName: "%s",
                             redirectUris: [
                                 "%s"
@@ -105,6 +108,7 @@ public class ClientMutationResolverTest extends BaseServiceIntegrationTest {
                         }
                     }
                     """,
+                    clientDto.getClientId(),
                     clientDto.getClientName(),
                     clientDto.getRedirectUris().stream().findAny().get(),
                     clientDto.getClientSettingsMap().replaceAll("\\\"", "\\\\\"")
@@ -140,6 +144,7 @@ public class ClientMutationResolverTest extends BaseServiceIntegrationTest {
                     """
                     mutation {
                         registerClient(client: {
+                            clientId: "%s",
                             clientName: "%s",
                             redirectUris: [
                                 "%s"
@@ -154,6 +159,7 @@ public class ClientMutationResolverTest extends BaseServiceIntegrationTest {
                         }
                     }
                     """,
+                    clientDto.getClientId(),
                     clientDto.getClientName(),
                     clientDto.getRedirectUris().stream().findAny().get(),
                     clientDto.getClientSettingsMap().replaceAll("\\\"", "\\\\\"")
