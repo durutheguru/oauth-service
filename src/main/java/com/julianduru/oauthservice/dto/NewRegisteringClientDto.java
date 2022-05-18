@@ -19,6 +19,8 @@ import java.util.Set;
 @Data
 public class NewRegisteringClientDto {
 
+    @NotEmpty(message = "Client ID is required.")
+    private String clientId;
 
     @NotEmpty(message = "Client Name is required. Cannot be empty.")
     private String clientName;
@@ -38,6 +40,7 @@ public class NewRegisteringClientDto {
     public static NewRegisteringClientDto from(NewRegisteringClient client) {
         var dto = new NewRegisteringClientDto();
 
+        dto.setClientId(client.getClientId());
         dto.setClientName(client.getClientName());
         dto.setRedirectUris(client.getRedirectUris());
         if (StringUtils.hasText(client.getClientSettingsMap())) {
@@ -58,6 +61,7 @@ public class NewRegisteringClientDto {
     public RegisteredClientDto toRegisteredClientDto() {
         var registeredClientDto = new RegisteredClientDto();
 
+        registeredClientDto.setClientId(getClientId());
         registeredClientDto.setClientName(getClientName());
         registeredClientDto.setRedirectUris(getRedirectUris());
         registeredClientDto.setClientSettings(buildClientSettings());
@@ -98,6 +102,13 @@ public class NewRegisteringClientDto {
                             Duration.ofSeconds(((Number)value).longValue())
                         );
                     }
+
+                    if (value instanceof String) {
+                        settings.put(
+                            ConfigurationSettingNames.Token.ACCESS_TOKEN_TIME_TO_LIVE,
+                            Duration.ofSeconds(Integer.parseInt((String)value))
+                        );
+                    }
                 }
 
                 if (settings.containsKey(ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE)) {
@@ -106,6 +117,13 @@ public class NewRegisteringClientDto {
                         settings.put(
                             ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE,
                             Duration.ofSeconds(((Number)value).longValue())
+                        );
+                    }
+
+                    if (value instanceof String) {
+                        settings.put(
+                            ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE,
+                            Duration.ofSeconds(Integer.parseInt((String)value))
                         );
                     }
                 }

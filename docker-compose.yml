@@ -1,0 +1,59 @@
+
+version: '3.8'
+
+
+services:
+  mysqldb:
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_DATABASE=oauth-service
+      - MYSQL_ROOT_PASSWORD=1234567890
+    ports:
+      - "3307:3306"
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - docker-net
+
+#  oauth-service:
+#    depends_on:
+#      - mysqldb
+#    build: .
+#    restart: always
+#    ports:
+#      - "10101:10101"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/oauth-service?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useLegacyDatetimeCode=false
+#      SPRING_DATASOURCE_USERNAME: root
+#      SPRING_DATASOURCE_PASSWORD: 1234567890
+#    stdin_open: true
+#    tty: true
+#    networks:
+#      - docker-net
+
+  oauth-service:
+    depends_on:
+      - mysqldb
+    image: oauth-service:v1
+    restart: always
+    ports:
+      - "10101:10101"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/oauth-service?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useLegacyDatetimeCode=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234567890
+    stdin_open: true
+    tty: true
+    networks:
+      - docker-net
+
+
+volumes:
+  db:
+
+
+networks:
+  docker-net:
+
+

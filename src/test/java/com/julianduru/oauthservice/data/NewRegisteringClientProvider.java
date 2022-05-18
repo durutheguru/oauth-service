@@ -24,6 +24,7 @@ public class NewRegisteringClientProvider implements DataProvider<NewRegistering
     public NewRegisteringClient provide() {
         var client = new NewRegisteringClient();
 
+        client.setClientId(faker.code().isbn10(false));
         client.setClientName(faker.name().fullName() + " Client");
         client.setRedirectUris(
             Set.of(

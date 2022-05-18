@@ -3,6 +3,7 @@ package com.julianduru.oauthservice.module.client;
 import com.julianduru.oauthservice.dto.ClientDto;
 import com.julianduru.oauthservice.dto.NewRegisteringClient;
 import com.julianduru.oauthservice.dto.NewRegisteringClientDto;
+import com.julianduru.oauthservice.exception.UnprocessableInputException;
 import com.julianduru.oauthservice.module.client.component.NewRegisteringClientSettingsValidator;
 import com.julianduru.oauthservice.module.config.RegisteringClientConfigurer;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDto registerClient(NewRegisteringClient client) {
+        validateClientIDNotExists(client);
+
         var clientDto = clientConfigurer.init(
             NewRegisteringClientDto
                 .from(client)
@@ -49,7 +52,16 @@ public class ClientServiceImpl implements ClientService {
     }
 
 
-}
+    private void validateClientIDNotExists(NewRegisteringClient client) {
+        var existingClient = clientRepository.findByClientId(client.getClientId());
+        if (existingClient != null) {
+            throw new UnprocessableInputException(
+                String.format("Client ID %s already exists", client.getClientId())
+            );
+        }
+    }
 
+
+}
 
 
