@@ -99,7 +99,7 @@ jobs:
       run: |
         git fetch --all
     - name: Merge to Develop
-      uses: devmasx/merge-branch@v1.1.0
+      uses: devmasx/merge-branch@1.4.0
       with:
         type: now
         target_branch: develop
