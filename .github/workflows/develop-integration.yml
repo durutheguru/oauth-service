@@ -11,7 +11,7 @@ jobs:
     
     if: github.event.pull_request.merged == true
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Java 17 env
         uses: actions/setup-java@v1
         with:
@@ -50,7 +50,7 @@ jobs:
     if: github.event.pull_request.merged == true
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Fetching
         run: |
           git fetch --all
