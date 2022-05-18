@@ -102,6 +102,13 @@ public class NewRegisteringClientDto {
                             Duration.ofSeconds(((Number)value).longValue())
                         );
                     }
+
+                    if (value instanceof String) {
+                        settings.put(
+                            ConfigurationSettingNames.Token.ACCESS_TOKEN_TIME_TO_LIVE,
+                            Duration.ofSeconds(Integer.parseInt((String)value))
+                        );
+                    }
                 }
 
                 if (settings.containsKey(ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE)) {
@@ -110,6 +117,13 @@ public class NewRegisteringClientDto {
                         settings.put(
                             ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE,
                             Duration.ofSeconds(((Number)value).longValue())
+                        );
+                    }
+
+                    if (value instanceof String) {
+                        settings.put(
+                            ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE,
+                            Duration.ofSeconds(Integer.parseInt((String)value))
                         );
                     }
                 }
