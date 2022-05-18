@@ -25,13 +25,13 @@ jobs:
       - name: Installing GitVersion
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-        uses: gittools/actions/gitversion/setup@v0.9.3
+        uses: gittools/actions/gitversion/setup@v0.9.13
         with:
           versionSpec: '5.3.x'
 
       - name: Use GitVersion
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.9.3
+        uses: gittools/actions/gitversion/execute@v0.9.13
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
