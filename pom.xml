@@ -20,6 +20,7 @@
 		<java.version>17</java.version>
 		<testcontainers.version>1.16.2</testcontainers.version>
 		<diffChangeLogFile>/.</diffChangeLogFile>
+		<org.jooq.version>3.16.6</org.jooq.version>
 	</properties>
 	<dependencies>
 
@@ -69,6 +70,12 @@
 			<groupId>com.github.javafaker</groupId>
 			<artifactId>javafaker</artifactId>
 			<version>1.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq</artifactId>
+			<version>${org.jooq.version}</version>
 		</dependency>
 
 		<dependency>
@@ -156,6 +163,27 @@
 	<build>
 		<plugins>
 
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<files>
+								<file>src/main/resources/jooq.properties</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -223,6 +251,56 @@
 					</dependency>
 
 				</dependencies>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+				<version>3.14.15</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>8.0.28</version>
+					</dependency>
+				</dependencies>
+
+				<configuration>
+					<jdbc>
+						<url>${jooq_url}</url>
+						<user>${jooq_username}</user>
+						<password>${jooq_password}</password>
+						<driver>${jooq_driver}</driver>
+					</jdbc>
+<!--					<jdbc>-->
+<!--						<url>jdbc:mysql://localhost:3306/oauth_service?createDatabaseIfNotExist=true</url>-->
+<!--						<user>root</user>-->
+<!--						<password />-->
+<!--						<driver>com.mysql.cj.jdbc.Driver</driver>-->
+<!--					</jdbc>-->
+					<generator>
+						<database>
+							<name>org.jooq.meta.mysql.MySQLDatabase</name>
+							<includes>.*</includes>
+							<excludes />
+							<inputSchema>oauth_service</inputSchema>
+						</database>
+						<target>
+							<packageName>com.julianduru.oauthservice.jooq</packageName>
+							<directory>src/main/java</directory>
+						</target>
+					</generator>
+				</configuration>
 			</plugin>
 
 		</plugins>
