@@ -23,15 +23,15 @@ public class JooqConfig {
     private String jooqDialect;
 
 
-    @Bean
-    public TransactionAwareDataSourceProxy transactionAwareDataSource(DataSource dataSource) {
-        return new TransactionAwareDataSourceProxy(dataSource);
-    }
+//    @Bean
+//    public TransactionAwareDataSourceProxy transactionAwareDataSource(DataSource dataSource) {
+//        return new TransactionAwareDataSourceProxy(dataSource);
+//    }
 
 
     @Bean
-    public DataSourceConnectionProvider connectionProvider(TransactionAwareDataSourceProxy transactionAwareDataSource) {
-        return new DataSourceConnectionProvider(transactionAwareDataSource);
+    public DataSourceConnectionProvider connectionProvider(DataSource dataSource) {
+        return new DataSourceConnectionProvider(dataSource);
     }
 
 

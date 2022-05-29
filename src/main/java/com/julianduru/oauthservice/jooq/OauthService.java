@@ -11,6 +11,7 @@ import com.julianduru.oauthservice.jooq.tables.Oauth2AuthorizationConsent;
 import com.julianduru.oauthservice.jooq.tables.Oauth2RegisteredClient;
 import com.julianduru.oauthservice.jooq.tables.ResourceServer;
 import com.julianduru.oauthservice.jooq.tables.ResourceServerAllowedScopes;
+import com.julianduru.oauthservice.jooq.tables.UserData;
 
 import java.util.Arrays;
 import java.util.List;
@@ -69,6 +70,11 @@ public class OauthService extends SchemaImpl {
     public final ResourceServerAllowedScopes RESOURCE_SERVER_ALLOWED_SCOPES = ResourceServerAllowedScopes.RESOURCE_SERVER_ALLOWED_SCOPES;
 
     /**
+     * The table <code>oauth_service.user_data</code>.
+     */
+    public final UserData USER_DATA = UserData.USER_DATA;
+
+    /**
      * No further instances allowed
      */
     private OauthService() {
@@ -90,6 +96,7 @@ public class OauthService extends SchemaImpl {
             Oauth2AuthorizationConsent.OAUTH2_AUTHORIZATION_CONSENT,
             Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT,
             ResourceServer.RESOURCE_SERVER,
-            ResourceServerAllowedScopes.RESOURCE_SERVER_ALLOWED_SCOPES);
+            ResourceServerAllowedScopes.RESOURCE_SERVER_ALLOWED_SCOPES,
+            UserData.USER_DATA);
     }
 }

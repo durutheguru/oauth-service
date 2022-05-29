@@ -10,12 +10,14 @@ import com.julianduru.oauthservice.jooq.tables.Oauth2AuthorizationConsent;
 import com.julianduru.oauthservice.jooq.tables.Oauth2RegisteredClient;
 import com.julianduru.oauthservice.jooq.tables.ResourceServer;
 import com.julianduru.oauthservice.jooq.tables.ResourceServerAllowedScopes;
+import com.julianduru.oauthservice.jooq.tables.UserData;
 import com.julianduru.oauthservice.jooq.tables.records.DatabasechangeloglockRecord;
 import com.julianduru.oauthservice.jooq.tables.records.Oauth2AuthorizationConsentRecord;
 import com.julianduru.oauthservice.jooq.tables.records.Oauth2AuthorizationRecord;
 import com.julianduru.oauthservice.jooq.tables.records.Oauth2RegisteredClientRecord;
 import com.julianduru.oauthservice.jooq.tables.records.ResourceServerAllowedScopesRecord;
 import com.julianduru.oauthservice.jooq.tables.records.ResourceServerRecord;
+import com.julianduru.oauthservice.jooq.tables.records.UserDataRecord;
 
 import org.jooq.ForeignKey;
 import org.jooq.TableField;
@@ -42,6 +44,9 @@ public class Keys {
     public static final UniqueKey<Oauth2RegisteredClientRecord> KEY_OAUTH2_REGISTERED_CLIENT_UNIQUE_REGISTERED_CLIENT_ID_03FA7B9A_905F_4B59 = Internal.createUniqueKey(Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT, DSL.name("KEY_oauth2_registered_client_UNIQUE_registered_client_id_03fa7b9a-905f-4b59"), new TableField[] { Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT.CLIENT_ID }, true);
     public static final UniqueKey<ResourceServerRecord> KEY_RESOURCE_SERVER_PRIMARY = Internal.createUniqueKey(ResourceServer.RESOURCE_SERVER, DSL.name("KEY_resource_server_PRIMARY"), new TableField[] { ResourceServer.RESOURCE_SERVER.ID }, true);
     public static final UniqueKey<ResourceServerRecord> KEY_RESOURCE_SERVER_UC_RESOURCE_SERVERRESOURCE_SERVER_ID_COL = Internal.createUniqueKey(ResourceServer.RESOURCE_SERVER, DSL.name("KEY_resource_server_UC_RESOURCE_SERVERRESOURCE_SERVER_ID_COL"), new TableField[] { ResourceServer.RESOURCE_SERVER.RESOURCE_SERVER_ID }, true);
+    public static final UniqueKey<UserDataRecord> KEY_USER_DATA_PRIMARY = Internal.createUniqueKey(UserData.USER_DATA, DSL.name("KEY_user_data_PRIMARY"), new TableField[] { UserData.USER_DATA.ID }, true);
+    public static final UniqueKey<UserDataRecord> KEY_USER_DATA_UC_USER_DATAEMAIL_COL = Internal.createUniqueKey(UserData.USER_DATA, DSL.name("KEY_user_data_UC_USER_DATAEMAIL_COL"), new TableField[] { UserData.USER_DATA.EMAIL }, true);
+    public static final UniqueKey<UserDataRecord> KEY_USER_DATA_UC_USER_DATAUSERNAME_COL = Internal.createUniqueKey(UserData.USER_DATA, DSL.name("KEY_user_data_UC_USER_DATAUSERNAME_COL"), new TableField[] { UserData.USER_DATA.USERNAME }, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions

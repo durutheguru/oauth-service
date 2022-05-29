@@ -1,0 +1,50 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+
+    <changeSet author="dduru (generated)" id="1653749788483-1">
+        <createTable tableName="user_data">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="user_dataPK"/>
+            </column>
+            <column name="auth_role_id" type="VARCHAR(100)"/>
+            <column name="auth_username" type="VARCHAR(100)"/>
+            <column name="time_added" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_updated" type="VARCHAR(255)"/>
+            <column name="additional_info" type="TEXT"/>
+            <column name="email" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="dduru (generated)" id="1653749788483-2">
+        <addUniqueConstraint columnNames="email" constraintName="UC_USER_DATAEMAIL_COL" tableName="user_data"/>
+    </changeSet>
+
+
+    <changeSet author="dduru (generated)" id="1653749788483-3">
+        <addUniqueConstraint columnNames="username" constraintName="UC_USER_DATAUSERNAME_COL" tableName="user_data"/>
+    </changeSet>
+
+    <changeSet author="dduru (generated)" id="1653855677351-1">
+        <addColumn tableName="user_data">
+            <column name="authorities" type="TEXT"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>
+
+

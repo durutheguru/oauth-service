@@ -12,10 +12,12 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -143,6 +145,7 @@ public class AuthorizationServerConfig {
     @SuppressWarnings("unchecked")
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
         return context -> {
+            var principal = context.getPrincipal();
             if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
                 var client = context.getRegisteredClient();
                 context.getClaims().claims(claims -> {
@@ -157,6 +160,14 @@ public class AuthorizationServerConfig {
                     }
 
                     claims.put(JwtClaimNames.AUD, auds);
+
+                    if (principal instanceof UsernamePasswordAuthenticationToken) {
+                        var token = (UsernamePasswordAuthenticationToken) principal;
+                        var authorities = token.getAuthorities().stream()
+                            .map(GrantedAuthority::getAuthority).toList();
+
+                        claims.put("authorities", authorities);
+                    }
                 });
             }
         };

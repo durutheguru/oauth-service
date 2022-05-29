@@ -1,7 +1,5 @@
 package com.julianduru.oauthservice;
 
-import org.springframework.security.oauth2.server.authorization.config.ConfigurationSettingNames;
-
 /**
  * created by julian on 13/04/2022
  */
@@ -19,11 +17,21 @@ public interface AuthServerConstants {
 
     interface ClientTokenSettings {
 
-
         String ALLOWED_RESOURCES = "settings.client.allowed.resources";
 
+    }
+
+
+    interface Patterns {
+
+        String PHONE = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$";
+
+
+        String EMAIL = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
 
     }
 
 
 }
+
+
