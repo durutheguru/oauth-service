@@ -51,6 +51,12 @@ public class UserData extends BaseEntity {
     private Map<String, String> additionalInfo;
 
 
+    private boolean locked;
+
+
+    private boolean credentialsExpired;
+
+
     public UsernamePasswordAuthenticationToken toToken() {
         var token = new UsernamePasswordAuthenticationToken(
             username, null,
@@ -63,6 +69,7 @@ public class UserData extends BaseEntity {
 
         return token;
     }
+
 
 }
 

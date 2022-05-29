@@ -29,11 +29,9 @@
         </createTable>
     </changeSet>
 
-
     <changeSet author="dduru (generated)" id="1653749788483-2">
         <addUniqueConstraint columnNames="email" constraintName="UC_USER_DATAEMAIL_COL" tableName="user_data"/>
     </changeSet>
-
 
     <changeSet author="dduru (generated)" id="1653749788483-3">
         <addUniqueConstraint columnNames="username" constraintName="UC_USER_DATAUSERNAME_COL" tableName="user_data"/>
@@ -42,6 +40,22 @@
     <changeSet author="dduru (generated)" id="1653855677351-1">
         <addColumn tableName="user_data">
             <column name="authorities" type="TEXT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="dduru (generated)" id="1653859513136-1">
+        <addColumn tableName="user_data">
+            <column name="credentials_expired" type="bit">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="dduru (generated)" id="1653859513136-2">
+        <addColumn tableName="user_data">
+            <column name="locked" type="bit">
+                <constraints nullable="false"/>
+            </column>
         </addColumn>
     </changeSet>
 

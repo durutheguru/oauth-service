@@ -1,6 +1,6 @@
 package com.julianduru.oauthservice.config;
 
-import com.julianduru.oauthservice.AuthServerConstants;
+import com.julianduru.oauthservice.security.OAuthServiceTokenCustomizer;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -12,20 +12,16 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.OAuth2TokenType;
 import org.springframework.security.oauth2.core.authentication.OAuth2AuthenticationValidator;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
-import org.springframework.security.oauth2.jwt.JwtClaimNames;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.*;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationProvider;
@@ -40,7 +36,8 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.*;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 /**
@@ -142,35 +139,8 @@ public class AuthorizationServerConfig {
 
 
     @Bean
-    @SuppressWarnings("unchecked")
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
-        return context -> {
-            var principal = context.getPrincipal();
-            if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
-                var client = context.getRegisteredClient();
-                context.getClaims().claims(claims -> {
-                    var auds = new ArrayList<>((List<String>) claims.get(JwtClaimNames.AUD));
-                    var clientSettings = client.getClientSettings();
-
-                    if (clientSettings.getSetting(AuthServerConstants.ClientTokenSettings.ALLOWED_RESOURCES) != null) {
-                        var allowedResourcesValue = (String)clientSettings.getSetting(AuthServerConstants.ClientTokenSettings.ALLOWED_RESOURCES);
-                        var allowedResourcesArray = allowedResourcesValue.split("\\s*,\\s*");
-
-                        auds.addAll(Arrays.asList(allowedResourcesArray));
-                    }
-
-                    claims.put(JwtClaimNames.AUD, auds);
-
-                    if (principal instanceof UsernamePasswordAuthenticationToken) {
-                        var token = (UsernamePasswordAuthenticationToken) principal;
-                        var authorities = token.getAuthorities().stream()
-                            .map(GrantedAuthority::getAuthority).toList();
-
-                        claims.put("authorities", authorities);
-                    }
-                });
-            }
-        };
+        return new OAuthServiceTokenCustomizer();
     }
 
 
@@ -179,20 +149,6 @@ public class AuthorizationServerConfig {
         return ProviderSettings.builder()
             .issuer(issuerUrl)
             .build();
-    }
-
-
-    //TODO: modify this bean to include proper implementation
-    @Bean
-    public UserDetailsService users(PasswordEncoder passwordEncoder) {
-        var user = User.builder()
-            .passwordEncoder(passwordEncoder::encode)
-            .username("admin")
-            .password("password")
-            .authorities(new SimpleGrantedAuthority("USER"))
-            .build();
-
-        return new InMemoryUserDetailsManager(user);
     }
 
 

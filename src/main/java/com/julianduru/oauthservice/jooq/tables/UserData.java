@@ -16,7 +16,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row10;
+import org.jooq.Row11;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -98,6 +98,11 @@ public class UserData extends TableImpl<UserDataRecord> {
      */
     public final TableField<UserDataRecord, String> USERNAME = createField(DSL.name("username"), SQLDataType.VARCHAR(200).nullable(false), this, "");
 
+    /**
+     * The column <code>oauth_service.user_data.authorities</code>.
+     */
+    public final TableField<UserDataRecord, String> AUTHORITIES = createField(DSL.name("authorities"), SQLDataType.CLOB, this, "");
+
     private UserData(Name alias, Table<UserDataRecord> aliased) {
         this(alias, aliased, null);
     }
@@ -178,11 +183,11 @@ public class UserData extends TableImpl<UserDataRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row10 type methods
+    // Row11 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row10<Long, String, String, String, String, String, String, String, String, String> fieldsRow() {
-        return (Row10) super.fieldsRow();
+    public Row11<Long, String, String, String, String, String, String, String, String, String, String> fieldsRow() {
+        return (Row11) super.fieldsRow();
     }
 }
