@@ -1,4 +1,4 @@
-package com.julianduru.oauthservice.security;
+package com.julianduru.oauthservice.config;
 
 import com.julianduru.oauthservice.AuthServerConstants;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

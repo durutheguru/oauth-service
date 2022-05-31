@@ -1,6 +1,7 @@
 package com.julianduru.oauthservice.config;
 
-import com.julianduru.oauthservice.security.OAuthServiceTokenCustomizer;
+import com.julianduru.oauthservice.config.properties.BootstrapProperties;
+import com.julianduru.oauthservice.repository.UserDataRepository;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -16,8 +17,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.authentication.OAuth2AuthenticationValidator;
@@ -25,10 +24,8 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.*;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationProvider;
-import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.security.KeyPair;
@@ -102,8 +99,13 @@ public class AuthorizationServerConfig {
 
 
     @Bean
-    public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
-         return new JdbcRegisteredClientRepository(jdbcTemplate);
+    public RegisteredClientRepository registeredClientRepository(
+        JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder, BootstrapProperties bootstrapProperties
+    ) {
+         var repository = new OAuthJdbcRegisteredClientRepository(jdbcTemplate, passwordEncoder, bootstrapProperties);
+         repository.init();
+
+         return repository;
     }
 
 
@@ -120,6 +122,17 @@ public class AuthorizationServerConfig {
         JdbcTemplate jdbcTemplate, RegisteredClientRepository clientRepository
     ) {
         return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, clientRepository);
+    }
+
+
+    @Bean
+    public UserDetailsService userDetailsService(
+        UserDataRepository userDataRepository, PasswordEncoder passwordEncoder, BootstrapProperties bootstrapProperties
+    ) {
+        var userDetailsService = new OAuthUserDetailsService(passwordEncoder, userDataRepository, bootstrapProperties);
+        userDetailsService.init();
+
+        return userDetailsService;
     }
 
 
@@ -173,5 +186,4 @@ public class AuthorizationServerConfig {
 
 
 }
-
 

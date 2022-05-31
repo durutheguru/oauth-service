@@ -27,8 +27,9 @@ public class SecurityConfiguration {
                         .cors().and().csrf().disable()
                         .authorizeRequests()
                         .antMatchers(
-                            "/graphql"
-                        ).permitAll()
+                "/api/register_client"
+                        )
+                        .authenticated().and().httpBasic()
                         .and()
                         .authorizeRequests()
                         .anyRequest().fullyAuthenticated();
@@ -49,3 +50,4 @@ public class SecurityConfiguration {
 
 
 }
+

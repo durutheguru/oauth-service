@@ -1,23 +1,23 @@
-package com.julianduru.oauthservice.security;
+package com.julianduru.oauthservice.config;
 
+import com.julianduru.oauthservice.config.properties.BootstrapProperties;
 import com.julianduru.oauthservice.entity.UserData;
 import com.julianduru.oauthservice.repository.UserDataRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
  * created by julian on 28/05/2022
  */
-@Component
+@Slf4j
 @RequiredArgsConstructor
 public class OAuthUserDetailsService implements UserDetailsService {
 
@@ -28,15 +28,22 @@ public class OAuthUserDetailsService implements UserDetailsService {
     private final UserDataRepository userDataRepository;
 
 
-    @PostConstruct
-    public void init() {
+    private final BootstrapProperties bootstrapProperties;
+
+
+    protected void init() {
+        if (userDataRepository.existsByUsername(bootstrapProperties.getAdminUsername())) {
+            log.info("Admin user already registered. Skipping initialization..");
+            return;
+        }
+
         var userData = new UserData();
 
-        userData.setUsername("admin1");
-        userData.setPassword(passwordEncoder.encode("password1"));
-        userData.setName("ADMIN ONE");
-        userData.setEmail("admin@test.com");
-        userData.setAuthorities(List.of("USER"));
+        userData.setUsername(bootstrapProperties.getAdminUsername());
+        userData.setPassword(passwordEncoder.encode(bootstrapProperties.getAdminPassword()));
+        userData.setName(bootstrapProperties.getAdminName());
+        userData.setEmail(bootstrapProperties.getAdminEmail());
+        userData.setAuthorities(List.of("ADMIN"));
 
         userDataRepository.save(userData);
     }
