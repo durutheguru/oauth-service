@@ -15,6 +15,8 @@ public interface ClientService {
 
     ClientDto registerClient(NewRegisteringClient client);
 
+    ClientDto registerClient(NewRegisteringClientDto client);
+
     List<RegisteredClientDto> fetchClients();
 
 }

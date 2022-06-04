@@ -41,7 +41,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDto registerClient(NewRegisteringClient client) {
-        validateClientIDNotExists(client);
+        validateClientIDNotExists(client.getClientId());
 
         var clientDto = clientConfigurer.init(
             NewRegisteringClientDto
@@ -59,16 +59,33 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Override
+    public ClientDto registerClient(NewRegisteringClientDto clientDto) {
+        validateClientIDNotExists(clientDto.getClientId());
+
+        var registeredClientDto = clientConfigurer.init(
+            clientDto.toRegisteredClientDto()
+        );
+
+        var registeredClient = registeredClientDto.mapToNewEntity(passwordEncoder);
+        clientRepository.save(clientSettingsValidator.valid(registeredClient));
+
+        // TODO: email dispatch of credentials to admin email ...
+
+        return ClientDto.fromRegisteredClient(registeredClientDto.withId(registeredClient.getId()));
+    }
+
+
+    @Override
     public List<RegisteredClientDto> fetchClients() {
         return registeredClientFetcher.fetchClients();
     }
 
 
-    private void validateClientIDNotExists(NewRegisteringClient client) {
-        var existingClient = clientRepository.findByClientId(client.getClientId());
+    private void validateClientIDNotExists(String clientId) {
+        var existingClient = clientRepository.findByClientId(clientId);
         if (existingClient != null) {
             throw new UnprocessableInputException(
-                String.format("Client ID %s already exists", client.getClientId())
+                String.format("Client ID %s already exists", clientId)
             );
         }
     }

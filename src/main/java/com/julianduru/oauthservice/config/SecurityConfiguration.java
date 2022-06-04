@@ -1,12 +1,16 @@
 package com.julianduru.oauthservice.config;
 
+import com.julianduru.oauthservice.api.CustomAuthenticationConfigurer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.Customizer;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -14,40 +18,38 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Slf4j
 @EnableWebSecurity
+//@Order(1)
 public class SecurityConfiguration {
 
 
+    @Autowired
+    private ClientAuthenticationProvider authenticationProvider;
+
+
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+    @Primary
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    public SecurityFilterChain authorizationServerSecurityFilterChain(
+        HttpSecurity http
+    ) throws Exception {
+
         http
-            .authorizeRequests(authorizeRequests -> {
-                try {
-                    authorizeRequests
-                        .and()
-                        .cors().and().csrf().disable()
-                        .authorizeRequests()
-                        .antMatchers(
-                "/api/register_client"
-                        )
-                        .authenticated().and().httpBasic()
-                        .and()
-                        .authorizeRequests()
-                        .anyRequest().fullyAuthenticated();
-                } catch (Throwable t) {
-                    log.error("Error during Security Filter Chain configuration", t);
-                }
-            })
-            .formLogin(Customizer.withDefaults());
+            .authorizeHttpRequests(
+                (registry) -> registry
+                    .mvcMatchers("/api/register_client")
+                    .authenticated()
+            )
+            .apply(CustomAuthenticationConfigurer.configure(authenticationProvider))
+            .and().csrf().disable()
+//            .apply(new HttpBasicConfigurer<>());
+//            .authenticationProvider(authenticationProvider)
+        ;
 
         return http.build();
     }
 
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 
 }
+
 
