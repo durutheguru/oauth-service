@@ -1,16 +1,14 @@
 package com.julianduru.oauthservice.config;
 
-import com.julianduru.oauthservice.api.CustomAuthenticationConfigurer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -20,10 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 //@Order(1)
 public class SecurityConfiguration {
-
-
-    @Autowired
-    private ClientAuthenticationProvider authenticationProvider;
 
 
     @Bean
@@ -39,13 +33,18 @@ public class SecurityConfiguration {
                     .mvcMatchers("/api/register_client")
                     .authenticated()
             )
-            .apply(CustomAuthenticationConfigurer.configure(authenticationProvider))
-            .and().csrf().disable()
-//            .apply(new HttpBasicConfigurer<>());
-//            .authenticationProvider(authenticationProvider)
-        ;
+            .httpBasic()
+            .and().csrf().disable();
 
         return http.build();
+    }
+
+
+    @Autowired
+    public void setProviderManager(
+        AuthenticationManagerBuilder managerBuilder, ClientAuthenticationProvider authenticationProvider
+    ) {
+        managerBuilder.authenticationProvider(authenticationProvider);
     }
 
 
