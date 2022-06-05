@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.server.authorization.client.JdbcRegis
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -46,7 +47,14 @@ public class OAuthJdbcRegisteredClientRepository extends JdbcRegisteredClientRep
             .clientSecret(passwordEncoder.encode(bootstrapProperties.getClientSecret()))
             .clientName("OAuth Service Boot")
             .clientIdIssuedAt(Instant.now())
-            .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+            .authorizationGrantTypes(
+                grantTypes -> grantTypes.addAll(
+                    Arrays.asList(
+                        AuthorizationGrantType.REFRESH_TOKEN,
+                        AuthorizationGrantType.CLIENT_CREDENTIALS
+                    )
+                )
+            )
             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .build();
 

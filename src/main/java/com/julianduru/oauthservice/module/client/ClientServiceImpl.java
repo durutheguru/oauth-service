@@ -41,20 +41,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDto registerClient(NewRegisteringClient client) {
-        validateClientIDNotExists(client.getClientId());
-
-        var clientDto = clientConfigurer.init(
-            NewRegisteringClientDto
-                .from(client)
-                .toRegisteredClientDto()
-        );
-
-        var registeredClient = clientDto.mapToNewEntity(passwordEncoder);
-        clientRepository.save(clientSettingsValidator.valid(registeredClient));
-
-        // TODO: email dispatch of credentials to admin email ...
-
-        return ClientDto.fromRegisteredClient(clientDto.withId(registeredClient.getId()));
+        return registerClient(NewRegisteringClientDto.from(client));
     }
 
 
