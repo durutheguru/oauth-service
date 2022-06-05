@@ -31,9 +31,13 @@ import org.springframework.security.oauth2.core.authentication.OAuth2Authenticat
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.*;
+import org.springframework.security.oauth2.server.authorization.authentication.ClientSecretAuthenticationProvider;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationProvider;
+import org.springframework.security.oauth2.server.authorization.authentication.OAuth2ClientCredentialsAuthenticationProvider;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -51,7 +55,6 @@ import java.util.function.Function;
  */
 @Slf4j
 @Configuration
-//@Order(2)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AuthorizationServerConfig {
 
@@ -59,54 +62,18 @@ public class AuthorizationServerConfig {
     private String issuerUrl;
 
 
+
+
+
 //    @Bean
-//    @Order(Ordered.HIGHEST_PRECEDENCE)
-    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        applyDefaultSecurity(http);
-        return http.build();
-    }
-
-
-    private void applyDefaultSecurity(HttpSecurity http) throws Exception {
-        var configurer = new OAuth2AuthorizationServerConfigurer<HttpSecurity>();
-        var endpointMatcher = configurer.getEndpointsMatcher();
-
-        http
-            .requestMatcher(endpointMatcher)
-            .authorizeRequests(
-                requests -> requests.anyRequest().authenticated()
-            )
-            .csrf(csrf -> csrf.ignoringRequestMatchers(endpointMatcher))
-            .formLogin().loginPage("/login")
-            .and()
-            .apply(configurer);
-    }
-
-
-    private AuthenticationProvider authenticationProvider(
-        RegisteredClientRepository clientRepository,
-        OAuth2AuthorizationService authorizationService,
-        OAuth2AuthorizationConsentService consentService
-    ) {
-        var provider = new OAuth2AuthorizationCodeRequestAuthenticationProvider(
-            clientRepository, authorizationService, consentService
-        );
-
-        provider.setAuthenticationValidatorResolver(
-            createDefaultAuthenticationValidatorResolver()
-        );
-
-        return provider;
-    }
-
-
-    private Function<String, OAuth2AuthenticationValidator> createDefaultAuthenticationValidatorResolver() {
-        var authValidatorMap = Map.of(
-            OAuth2ParameterNames.REDIRECT_URI, new RedirectUriOAuth2AuthenticationValidator()
-        );
-
-        return authValidatorMap::get;
-    }
+//    public AuthenticationProvider oauthClientAuthenticationProvider(
+//        OAuth2AuthorizationService authorizationService,
+//        OAuth2TokenGenerator<?> tokenGenerator
+//    ) {
+//        return new OAuth2ClientCredentialsAuthenticationProvider(
+//            authorizationService, tokenGenerator
+//        );
+//    }
 
 
     @Bean
