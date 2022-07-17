@@ -11,24 +11,27 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.*;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.server.authorization.*;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -42,21 +45,24 @@ public class SecurityBeansConfiguration {
     @Value("${oauth.service.config.issuer.url:http://localhost:8080}")
     private String issuerUrl;
 
+    @Value("${oauth.service.config.password-encoder.id:bcrypt}")
+    private String passwordEncoderId;
 
 
-    @Bean
-    public AuthenticationManager authenticationManager(
-        AuthenticationManagerBuilder authenticationManagerBuilder,
-        ClientAuthenticationProvider clientAuthenticationProvider
-    ) {
-        return authenticationManagerBuilder
-            .authenticationProvider(clientAuthenticationProvider).getOrBuild();
-    }
 
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new DelegatingPasswordEncoder(
+            passwordEncoderId,
+            Map.of(
+                "bcrypt", new BCryptPasswordEncoder(),
+                "noop", NoOpPasswordEncoder.getInstance(),
+                "pbkdf2", new Pbkdf2PasswordEncoder(),
+                "scrypt", new SCryptPasswordEncoder(),
+                "sha256", new StandardPasswordEncoder()
+            )
+        );
     }
 
 
@@ -147,7 +153,5 @@ public class SecurityBeansConfiguration {
     }
 
 
-
 }
-
 

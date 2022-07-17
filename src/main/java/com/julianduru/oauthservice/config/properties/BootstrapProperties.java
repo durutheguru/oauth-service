@@ -33,8 +33,12 @@ public class BootstrapProperties {
     private String adminPassword;
 
 
-    @NotEmpty(message = "Bootstrap Admin Name is required")
-    private String adminName;
+    @NotEmpty(message = "Bootstrap Admin First Name is required")
+    private String adminFirstName;
+
+
+    @NotEmpty(message = "Bootstrap Admin Last Name is required")
+    private String adminLastName;
 
 
     @NotEmpty(message = "Bootstrap Admin Email is required")

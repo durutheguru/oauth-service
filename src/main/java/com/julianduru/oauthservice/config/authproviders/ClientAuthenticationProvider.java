@@ -1,4 +1,4 @@
-package com.julianduru.oauthservice.config;
+package com.julianduru.oauthservice.config.authproviders;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -9,10 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2ClientAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.stereotype.Component;
-
-import java.util.Objects;
 
 /**
  * created by julian on 31/05/2022
@@ -48,12 +45,10 @@ public class ClientAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return authentication == UsernamePasswordAuthenticationToken.class ||
-            authentication == BearerTokenAuthenticationToken.class;
+        return authentication == UsernamePasswordAuthenticationToken.class;
     }
 
 
 }
-
 
 

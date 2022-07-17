@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.testcontainers.shaded.okhttp3.HttpUrl;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -33,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * created by julian on 21/04/2022
  */
 @Slf4j
+@ActiveProfiles({"h2"})
 public class AuthorizationCodeFlowTest extends BaseControllerTest {
 
 
@@ -59,16 +62,19 @@ public class AuthorizationCodeFlowTest extends BaseControllerTest {
     @Test
     public void testClientFetchingAuthorizationCode() throws Exception {
         var clientDto = clientDtoProvider.provide();
-        var client = clientService.registerClient(clientDto);
+        var registeredClient = clientService.registerClient(clientDto);
 
         mockMvc.perform(
             post(AuthServerConstants.DEFAULT_AUTHORIZATION_ENDPOINT_URI)
-                .param("client_id", client.getClientId())
+                .param("client_id", registeredClient.getClientId())
                 .param("redirect_uri", clientDto.getRedirectUris().stream().findAny().get())
-                .param("scope", "read")
+                .param("scope", "openid")
                 .param("response_type", "code")
                 .param("response_mode", "query")
                 .param("nonce", faker.code().isbn10(false))
+                .with(
+                    httpBasic(registeredClient.getClientId(), registeredClient.getClientSecret())
+                )
         ).andDo(print())
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("http://localhost/login"));

@@ -19,6 +19,9 @@ public interface UserDataRepository extends JpaRepository<UserData, Long> {
     boolean existsByUsername(String username);
 
 
+    boolean existsByEmail(String email);
+
+
     Optional<UserData> findByUsernameAndPassword(String username, String password);
 
 

@@ -16,7 +16,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row11;
+import org.jooq.Row14;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -84,11 +84,6 @@ public class UserData extends TableImpl<UserDataRecord> {
     public final TableField<UserDataRecord, String> EMAIL = createField(DSL.name("email"), SQLDataType.VARCHAR(200).nullable(false), this, "");
 
     /**
-     * The column <code>oauth_service.user_data.name</code>.
-     */
-    public final TableField<UserDataRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(200).nullable(false), this, "");
-
-    /**
      * The column <code>oauth_service.user_data.password</code>.
      */
     public final TableField<UserDataRecord, String> PASSWORD = createField(DSL.name("password"), SQLDataType.VARCHAR(250).nullable(false), this, "");
@@ -102,6 +97,26 @@ public class UserData extends TableImpl<UserDataRecord> {
      * The column <code>oauth_service.user_data.authorities</code>.
      */
     public final TableField<UserDataRecord, String> AUTHORITIES = createField(DSL.name("authorities"), SQLDataType.CLOB, this, "");
+
+    /**
+     * The column <code>oauth_service.user_data.credentials_expired</code>.
+     */
+    public final TableField<UserDataRecord, Boolean> CREDENTIALS_EXPIRED = createField(DSL.name("credentials_expired"), SQLDataType.BIT.nullable(false), this, "");
+
+    /**
+     * The column <code>oauth_service.user_data.locked</code>.
+     */
+    public final TableField<UserDataRecord, Boolean> LOCKED = createField(DSL.name("locked"), SQLDataType.BIT.nullable(false), this, "");
+
+    /**
+     * The column <code>oauth_service.user_data.first_name</code>.
+     */
+    public final TableField<UserDataRecord, String> FIRST_NAME = createField(DSL.name("first_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
+
+    /**
+     * The column <code>oauth_service.user_data.last_name</code>.
+     */
+    public final TableField<UserDataRecord, String> LAST_NAME = createField(DSL.name("last_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
 
     private UserData(Name alias, Table<UserDataRecord> aliased) {
         this(alias, aliased, null);
@@ -183,11 +198,11 @@ public class UserData extends TableImpl<UserDataRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row11 type methods
+    // Row14 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Long, String, String, String, String, String, String, String, String, String, String> fieldsRow() {
-        return (Row11) super.fieldsRow();
+    public Row14<Long, String, String, String, String, String, String, String, String, String, Boolean, Boolean, String, String> fieldsRow() {
+        return (Row14) super.fieldsRow();
     }
 }

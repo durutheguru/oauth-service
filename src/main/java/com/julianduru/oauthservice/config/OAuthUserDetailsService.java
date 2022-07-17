@@ -41,7 +41,8 @@ public class OAuthUserDetailsService implements UserDetailsService {
 
         userData.setUsername(bootstrapProperties.getAdminUsername());
         userData.setPassword(passwordEncoder.encode(bootstrapProperties.getAdminPassword()));
-        userData.setName(bootstrapProperties.getAdminName());
+        userData.setFirstName(bootstrapProperties.getAdminFirstName());
+        userData.setLastName(bootstrapProperties.getAdminLastName());
         userData.setEmail(bootstrapProperties.getAdminEmail());
         userData.setAuthorities(List.of("ADMIN"));
 
@@ -70,5 +71,6 @@ public class OAuthUserDetailsService implements UserDetailsService {
 
 
 }
+
 
 

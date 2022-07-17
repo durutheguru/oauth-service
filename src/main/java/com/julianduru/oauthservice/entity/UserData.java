@@ -1,12 +1,18 @@
 package com.julianduru.oauthservice.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.julianduru.oauthservice.AuthServerConstants;
+import com.julianduru.oauthservice.dto.UserDataDto;
 import com.julianduru.oauthservice.util.ListConverter;
 import com.julianduru.oauthservice.util.MapConverter;
 import com.julianduru.security.entity.BaseEntity;
+import com.julianduru.util.JSONUtil;
 import lombok.Data;
+import org.json.JSONObject;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -32,8 +38,12 @@ public class UserData extends BaseEntity {
     private String password;
 
 
-    @Column(nullable = false, length = 200)
-    private String name;
+    @Column(nullable = false, length = 100)
+    private String firstName;
+
+
+    @Column(nullable = false, length = 100)
+    private String lastName;
 
 
     @Column(nullable = false, unique = true, length = 200)
@@ -68,6 +78,32 @@ public class UserData extends BaseEntity {
         token.setDetails(this);
 
         return token;
+    }
+
+
+    public UserDataDto dto() throws JsonProcessingException {
+        var data = new UserDataDto();
+
+        data.setUsername(getUsername());
+        data.setPassword(getPassword());
+        data.setFirstName(getFirstName());
+        data.setLastName(getLastName());
+        data.setEmail(getEmail());
+        data.setLocked(isLocked());
+        data.setCredentialsExpired(isCredentialsExpired());
+        data.setAuthorities(getAuthorities());
+
+        if (getAdditionalInfo() != null) {
+            data.setAdditionalInfo(JSONUtil.asJsonString(getAdditionalInfo()));
+        }
+
+        return data;
+    }
+
+
+    public UserData encodePassword(PasswordEncoder encoder) {
+        this.setPassword(encoder.encode(getPassword()));
+        return this;
     }
 
 

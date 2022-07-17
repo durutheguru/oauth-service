@@ -61,6 +61,8 @@ public class AuthorizationServerConfig {
                 requests -> requests.anyRequest().authenticated()
             )
             .csrf(csrf -> csrf.ignoringRequestMatchers(endpointMatcher).disable())
+            .formLogin()
+            .and()
             .apply(configurer);
 
         return http.build();
@@ -80,6 +82,8 @@ public class AuthorizationServerConfig {
             .cors().and().csrf().disable()
             .authorizeRequests()
             .anyRequest().authenticated()
+            .and()
+            .formLogin()
             .and()
             .oauth2ResourceServer().jwt();
 

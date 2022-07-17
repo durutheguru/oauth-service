@@ -1,0 +1,8 @@
+
+
+extend type Mutation {
+
+    saveUser(userDto: UserDataInputDto!): UserDataDto!
+
+}
+
