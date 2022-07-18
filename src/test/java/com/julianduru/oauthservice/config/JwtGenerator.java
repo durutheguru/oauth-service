@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.lang.Nullable;
 import org.springframework.security.oauth2.core.*;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
@@ -16,6 +18,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 
+/**
+ *
+ */
 public final class JwtGenerator implements OAuth2TokenGenerator<Jwt> {
 
     private final JwtEncoder jwtEncoder;
@@ -23,9 +28,14 @@ public final class JwtGenerator implements OAuth2TokenGenerator<Jwt> {
     private OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer;
 
 
-    public JwtGenerator(JwtEncoder jwtEncoder) {
-        Assert.notNull(jwtEncoder, "jwtEncoder cannot be null");
-        this.jwtEncoder = jwtEncoder;
+    public JwtGenerator(
+        JWKSource<SecurityContext> jwkSource, OAuth2TokenCustomizer<JwtEncodingContext> accessTokenCustomizer
+    ) {
+        Assert.notNull(jwkSource, "jwkSource cannot be null");
+        Assert.notNull(accessTokenCustomizer, "jwtCustomizer cannot be null");
+
+        this.jwtEncoder = new NimbusJwtEncoder(jwkSource);
+        this.jwtCustomizer = accessTokenCustomizer;
     }
 
 
@@ -105,12 +115,5 @@ public final class JwtGenerator implements OAuth2TokenGenerator<Jwt> {
     }
 
 
-    public void setJwtCustomizer(OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer) {
-        Assert.notNull(jwtCustomizer, "jwtCustomizer cannot be null");
-        this.jwtCustomizer = jwtCustomizer;
-    }
-
-
 }
-
 

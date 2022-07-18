@@ -4,6 +4,8 @@ import com.julianduru.oauthservice.dto.UserDataDto;
 import com.julianduru.util.test.DataProvider;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * created by julian on 05/06/2022
  */
@@ -20,6 +22,9 @@ public class UserDataDtoProvider implements DataProvider<UserDataDto> {
         user.setUsername(faker.code().isbn10(false));
         user.setPassword(faker.code().isbn10(false));
         user.setEmail(faker.internet().emailAddress());
+        user.setAuthorities(
+            List.of("USER")
+        );
 
         return user;
     }

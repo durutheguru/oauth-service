@@ -40,10 +40,7 @@ public class TestConfig {
         JWKSource<SecurityContext> jwkSource,
         OAuth2TokenCustomizer<JwtEncodingContext> accessTokenCustomizer
     ) {
-        var generator = new JwtGenerator(new NimbusJwtEncoder(jwkSource));
-        generator.setJwtCustomizer(accessTokenCustomizer);
-
-        return generator;
+        return new JwtGenerator(jwkSource, accessTokenCustomizer);
     }
 
 

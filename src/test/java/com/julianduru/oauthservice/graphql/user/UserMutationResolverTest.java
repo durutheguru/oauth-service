@@ -6,6 +6,9 @@ import com.julianduru.oauthservice.data.NewRegisteringClientProvider;
 import com.julianduru.oauthservice.data.RegisteredClientProvider;
 import com.julianduru.oauthservice.data.UserDataDtoProvider;
 import com.julianduru.oauthservice.module.client.ClientService;
+import com.julianduru.oauthservice.repository.UserDataRepository;
+import com.julianduru.util.StringUtil;
+import org.codehaus.plexus.interpolation.util.StringUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -30,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * created by julian on 05/06/2022
  */
-@ActiveProfiles({"h2"})
+//@ActiveProfiles({"h2"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserMutationResolverTest extends BaseServiceIntegrationTest {
 
@@ -68,7 +71,7 @@ public class UserMutationResolverTest extends BaseServiceIntegrationTest {
 
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDataRepository userDataRepository;
 
 
 
@@ -128,11 +131,11 @@ public class UserMutationResolverTest extends BaseServiceIntegrationTest {
                                     password: "%s",
                                     firstName: "%s",
                                     lastName: "%s",
-                                    email: "%s"
+                                    email: "%s",
+                                    authorities: %s
                                 }
                             ) {
                                 username
-                                password
                                 firstName
                                 lastName
                                 email
@@ -143,14 +146,20 @@ public class UserMutationResolverTest extends BaseServiceIntegrationTest {
                     userDto.getPassword(),
                     userDto.getFirstName(),
                     userDto.getLastName(),
-                    userDto.getEmail()
+                    userDto.getEmail(),
+                    StringUtil.stringifyList(userDto.getAuthorities(), "\\\"")
                 ), "{}"
             );
 
         assertThat(response.isOk()).isTrue();
 
-        var userDetails = userDetailsService.loadUserByUsername(userDto.getUsername());
-        assertThat(userDetails).isNotNull();
+        var userDetails = userDataRepository.findByUsername(userDto.getUsername());
+
+        assertThat(userDetails).isPresent();
+        assertThat(userDetails.get().getEmail()).isEqualTo(userDto.getEmail());
+        assertThat(userDetails.get().getFirstName()).isEqualTo(userDto.getFirstName());
+        assertThat(userDetails.get().getLastName()).isEqualTo(userDto.getLastName());
+        assertThat(userDetails.get().getAuthorities()).containsAll(userDto.getAuthorities());
     }
 
 
