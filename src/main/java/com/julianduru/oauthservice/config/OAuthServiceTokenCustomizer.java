@@ -63,7 +63,7 @@ public class OAuthServiceTokenCustomizer implements OAuth2TokenCustomizer<JwtEnc
             var authorities = token.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).toList();
 
-            claims.put("auth", authorities);
+            claims.put("auth", new ArrayList<>(authorities));
         }
     }
 

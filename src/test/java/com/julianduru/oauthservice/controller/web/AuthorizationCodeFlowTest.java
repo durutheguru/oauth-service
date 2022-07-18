@@ -115,19 +115,19 @@ public class AuthorizationCodeFlowTest extends BaseControllerTest {
                 var refreshToken = new JSONObject(responseString).getString("refresh_token");
 
                 mockMvc.perform(
-                        post(AuthServerConstants.DEFAULT_TOKEN_ENDPOINT_URI)
-                            .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(
-                                String.format("%s:%s", client.getClientId(), client.getClientSecret()).getBytes()
-                            ))
-                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                            .param("grant_type", "refresh_token")
-                            .param("refresh_token", refreshToken)
-                    ).andDo(print())
-                    .andExpect(status().is2xxSuccessful())
-                    .andExpect(jsonPath("$.access_token", not(empty())))
-                    .andExpect(jsonPath("$.refresh_token", not(empty())))
-                    .andExpect(jsonPath("$.expires_in", notNullValue()))
-                    .andExpect(jsonPath("$.scope", not(empty())));
+                    post(AuthServerConstants.DEFAULT_TOKEN_ENDPOINT_URI)
+                        .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(
+                            String.format("%s:%s", client.getClientId(), client.getClientSecret()).getBytes()
+                        ))
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("grant_type", "refresh_token")
+                        .param("refresh_token", refreshToken)
+                ).andDo(print())
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.access_token", not(empty())))
+                .andExpect(jsonPath("$.refresh_token", not(empty())))
+                .andExpect(jsonPath("$.expires_in", notNullValue()))
+                .andExpect(jsonPath("$.scope", not(empty())));
             }
         );
     }

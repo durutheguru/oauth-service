@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.server.authorization.config.Configura
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,8 +28,10 @@ public class NewRegisteringClientProvider implements DataProvider<NewRegistering
         client.setClientId(faker.code().isbn10(false));
         client.setClientName(faker.name().fullName() + " Client");
         client.setRedirectUris(
-            Set.of(
-                "https://oidcdebugger.com/debug"
+            new HashSet<>(
+                Set.of(
+                    "https://oidcdebugger.com/debug"
+                )
             )
         );
         client.setTokenSettingsMap(

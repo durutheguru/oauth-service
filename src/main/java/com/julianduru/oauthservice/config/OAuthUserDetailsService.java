@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +45,9 @@ public class OAuthUserDetailsService implements UserDetailsService {
         userData.setFirstName(bootstrapProperties.getAdminFirstName());
         userData.setLastName(bootstrapProperties.getAdminLastName());
         userData.setEmail(bootstrapProperties.getAdminEmail());
-        userData.setAuthorities(List.of("ADMIN"));
+        userData.setAuthorities(
+            new ArrayList<>(List.of("ADMIN"))
+        );
 
         userDataRepository.save(userData);
     }
@@ -58,7 +61,9 @@ public class OAuthUserDetailsService implements UserDetailsService {
                     .username(data.getUsername())
                     .password(data.getPassword())
                     .authorities(
-                        data.getAuthorities().stream().map(SimpleGrantedAuthority::new).toList()
+                        new ArrayList<>(
+                            data.getAuthorities().stream().map(SimpleGrantedAuthority::new).toList()
+                        )
                     )
                     .accountLocked(data.isLocked())
                     .credentialsExpired(data.isCredentialsExpired())
