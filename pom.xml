@@ -21,6 +21,7 @@
 		<testcontainers.version>1.16.2</testcontainers.version>
 		<diffChangeLogFile>/.</diffChangeLogFile>
 		<org.jooq.version>3.16.6</org.jooq.version>
+		<org.jooq.skip>false</org.jooq.skip>
 	</properties>
 
 
@@ -272,6 +273,9 @@
 						<goals>
 							<goal>generate</goal>
 						</goals>
+						<configuration>
+							<skip>${org.jooq.skip}</skip>
+						</configuration>
 					</execution>
 				</executions>
 
@@ -290,12 +294,6 @@
 						<password>${jooq_password}</password>
 						<driver>${jooq_driver}</driver>
 					</jdbc>
-<!--					<jdbc>-->
-<!--						<url>jdbc:mysql://localhost:3306/oauth_service?createDatabaseIfNotExist=true</url>-->
-<!--						<user>root</user>-->
-<!--						<password />-->
-<!--						<driver>com.mysql.cj.jdbc.Driver</driver>-->
-<!--					</jdbc>-->
 					<generator>
 						<database>
 							<name>org.jooq.meta.mysql.MySQLDatabase</name>
