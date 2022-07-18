@@ -1,7 +1,8 @@
 package com.julianduru.oauthservice.controller.web;
 
+import com.github.javafaker.Faker;
 import com.julianduru.oauthservice.AuthServerConstants;
-import com.julianduru.oauthservice.BaseControllerTest;
+import com.julianduru.oauthservice.config.TestDataSourceConfig;
 import com.julianduru.oauthservice.data.NewRegisteringClientProvider;
 import com.julianduru.oauthservice.data.RegisteredClientProvider;
 import com.julianduru.oauthservice.data.ResourceServerDataProvider;
@@ -12,13 +13,19 @@ import com.julianduru.oauthservice.module.client.ClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.okhttp3.HttpUrl;
 
 import java.util.Base64;
@@ -34,8 +41,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * created by julian on 21/04/2022
  */
+@ActiveProfiles({"h2"})
 @Slf4j
-public class AuthorizationCodeFlowTest extends BaseControllerTest {
+@Testcontainers
+@ExtendWith({SpringExtension.class})
+@SpringBootTest(
+    classes = {
+        TestDataSourceConfig.class,
+    },
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
+@AutoConfigureMockMvc
+public class AuthorizationCodeFlowTest {
 
 
     @Autowired
@@ -56,6 +73,13 @@ public class AuthorizationCodeFlowTest extends BaseControllerTest {
 
     @Autowired
     private ClientService clientService;
+
+
+    @Autowired
+    protected MockMvc mockMvc;
+
+
+    protected Faker faker = new Faker();
 
 
     @Test
@@ -198,7 +222,6 @@ public class AuthorizationCodeFlowTest extends BaseControllerTest {
 
 
 }
-
 
 
 

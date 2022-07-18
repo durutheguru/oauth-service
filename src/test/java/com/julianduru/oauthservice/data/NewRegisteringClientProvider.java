@@ -41,9 +41,7 @@ public class NewRegisteringClientProvider implements DataProvider<NewRegistering
                     ConfigurationSettingNames.Token.ACCESS_TOKEN_TIME_TO_LIVE,
                     1000,
                     ConfigurationSettingNames.Token.REUSE_REFRESH_TOKENS,
-                    true,
-                    ConfigurationSettingNames.Token.ACCESS_TOKEN_FORMAT,
-                    OAuth2TokenFormat.REFERENCE
+                    true
                 )
             ).toString()
         );

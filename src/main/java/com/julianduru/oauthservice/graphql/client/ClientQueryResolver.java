@@ -21,8 +21,8 @@ public class ClientQueryResolver implements GraphQLQueryResolver {
     private final ClientService clientService;
 
 
-    public List<ClientDto> fetchClients() {
-        return clientService.fetchClients().stream().map(ClientDto::fromRegisteredClient).toList();
+    public List<ClientDto> fetchClients(int page, int size) {
+        return clientService.fetchClients(page, size).stream().map(ClientDto::fromRegisteredClient).toList();
     }
 
 

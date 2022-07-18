@@ -22,7 +22,6 @@ import java.util.List;
 /**
  * created by julian on 18/07/2022
  */
-@Component
 @RequiredArgsConstructor
 public class GraphQLTemplateJwtTokenBuilder {
 

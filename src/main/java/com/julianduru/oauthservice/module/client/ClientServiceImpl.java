@@ -63,7 +63,7 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Override
-    public List<RegisteredClientDto> fetchClients() {
+    public List<RegisteredClientDto> fetchClients(int page, int size) {
         return registeredClientFetcher.fetchClients();
     }
 

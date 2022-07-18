@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,7 +40,7 @@ public class ClientQueryResolverTest extends BaseServiceIntegrationTest {
     public void beforeClass() {
         jwtTokenBuilder.setupTemplate(testTemplate);
     }
-    
+
 
     @Test
     public void testFetchingClients() throws Exception {
@@ -70,3 +69,4 @@ public class ClientQueryResolverTest extends BaseServiceIntegrationTest {
 
 
 }
+

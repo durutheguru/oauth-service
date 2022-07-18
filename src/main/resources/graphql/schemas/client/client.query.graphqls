@@ -2,7 +2,7 @@
 
 extend type Query {
 
-    fetchClients: [ClientDto]
+    fetchClients(page: Int = 1, size: Int = 20): [ClientDto]
 
 }
 
