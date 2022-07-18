@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -33,9 +34,11 @@ public class ResourceServerDataProvider implements JpaDataProvider<ResourceServe
 
         server.setResourceServerId(faker.code().isbn10(false));
         server.setAllowedScopes(
-            Set.of(
-                OidcScopes.OPENID,
-                OidcScopes.EMAIL
+            new HashSet<>(
+                Set.of(
+                    OidcScopes.OPENID,
+                    OidcScopes.EMAIL
+                )
             )
         );
         server.setStatus(ServerStatus.ACTIVE);

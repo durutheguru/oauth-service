@@ -16,11 +16,12 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: 17
+          distribution: zulu
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify -s settings.xml -f pom.xml
+        run: mvn -B verify -s settings.xml -f pom.xml -Dorg.jooq.skip
       - name: Set Commit Message
         id: commit
         run: |

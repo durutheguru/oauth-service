@@ -10,4 +10,13 @@
         </root>
     </springProfile>
 
+
+    <springProfile name="h2">
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
 </configuration>

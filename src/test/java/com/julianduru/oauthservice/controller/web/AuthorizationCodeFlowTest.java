@@ -1,7 +1,8 @@
 package com.julianduru.oauthservice.controller.web;
 
+import com.github.javafaker.Faker;
 import com.julianduru.oauthservice.AuthServerConstants;
-import com.julianduru.oauthservice.BaseControllerTest;
+import com.julianduru.oauthservice.config.TestDataSourceConfig;
 import com.julianduru.oauthservice.data.NewRegisteringClientProvider;
 import com.julianduru.oauthservice.data.RegisteredClientProvider;
 import com.julianduru.oauthservice.data.ResourceServerDataProvider;
@@ -12,12 +13,18 @@ import com.julianduru.oauthservice.module.client.ClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.okhttp3.HttpUrl;
 
 import java.util.Base64;
@@ -25,6 +32,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -33,7 +41,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * created by julian on 21/04/2022
  */
 @Slf4j
-public class AuthorizationCodeFlowTest extends BaseControllerTest {
+@Testcontainers
+@ExtendWith({SpringExtension.class})
+@SpringBootTest(
+    classes = {
+        TestDataSourceConfig.class,
+    },
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
+@AutoConfigureMockMvc
+public class AuthorizationCodeFlowTest {
 
 
     @Autowired
@@ -56,19 +73,29 @@ public class AuthorizationCodeFlowTest extends BaseControllerTest {
     private ClientService clientService;
 
 
+    @Autowired
+    protected MockMvc mockMvc;
+
+
+    protected Faker faker = new Faker();
+
+
     @Test
     public void testClientFetchingAuthorizationCode() throws Exception {
         var clientDto = clientDtoProvider.provide();
-        var client = clientService.registerClient(clientDto);
+        var registeredClient = clientService.registerClient(clientDto);
 
         mockMvc.perform(
             post(AuthServerConstants.DEFAULT_AUTHORIZATION_ENDPOINT_URI)
-                .param("client_id", client.getClientId())
+                .param("client_id", registeredClient.getClientId())
                 .param("redirect_uri", clientDto.getRedirectUris().stream().findAny().get())
-                .param("scope", "read")
+                .param("scope", "openid")
                 .param("response_type", "code")
                 .param("response_mode", "query")
                 .param("nonce", faker.code().isbn10(false))
+                .with(
+                    httpBasic(registeredClient.getClientId(), registeredClient.getClientSecret())
+                )
         ).andDo(print())
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("http://localhost/login"));
@@ -109,19 +136,19 @@ public class AuthorizationCodeFlowTest extends BaseControllerTest {
                 var refreshToken = new JSONObject(responseString).getString("refresh_token");
 
                 mockMvc.perform(
-                        post(AuthServerConstants.DEFAULT_TOKEN_ENDPOINT_URI)
-                            .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(
-                                String.format("%s:%s", client.getClientId(), client.getClientSecret()).getBytes()
-                            ))
-                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                            .param("grant_type", "refresh_token")
-                            .param("refresh_token", refreshToken)
-                    ).andDo(print())
-                    .andExpect(status().is2xxSuccessful())
-                    .andExpect(jsonPath("$.access_token", not(empty())))
-                    .andExpect(jsonPath("$.refresh_token", not(empty())))
-                    .andExpect(jsonPath("$.expires_in", notNullValue()))
-                    .andExpect(jsonPath("$.scope", not(empty())));
+                    post(AuthServerConstants.DEFAULT_TOKEN_ENDPOINT_URI)
+                        .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(
+                            String.format("%s:%s", client.getClientId(), client.getClientSecret()).getBytes()
+                        ))
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("grant_type", "refresh_token")
+                        .param("refresh_token", refreshToken)
+                ).andDo(print())
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.access_token", not(empty())))
+                .andExpect(jsonPath("$.refresh_token", not(empty())))
+                .andExpect(jsonPath("$.expires_in", notNullValue()))
+                .andExpect(jsonPath("$.scope", not(empty())));
             }
         );
     }
@@ -193,7 +220,6 @@ public class AuthorizationCodeFlowTest extends BaseControllerTest {
 
 
 }
-
 
 
 

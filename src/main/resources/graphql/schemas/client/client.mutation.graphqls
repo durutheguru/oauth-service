@@ -1,7 +1,9 @@
 
 
 extend type Mutation {
+
     registerClient(client: NewRegisteringClient): ClientDto
+
 }
 
 

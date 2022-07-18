@@ -51,6 +51,11 @@ public class RegisteredClientDto {
     }
 
 
+    public static RegisteredClientDto with(String id) {
+        return new RegisteredClientDto().withId(id);
+    }
+
+
     public RegisteredClient mapToNewEntity(PasswordEncoder encoder) {
         return RegisteredClient.withId(UUID.randomUUID().toString())
             .clientName(clientName)

@@ -21,6 +21,7 @@ public class RegisteredClientProvider implements DataProvider<RegisteredClient> 
         return RegisteredClient.withId(UUID.randomUUID().toString())
             .clientId(faker.code().isbn10(false))
             .clientSecret(UUID.randomUUID() + UUID.randomUUID().toString())
+            .clientName(faker.name().fullName() + " Client")
             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .redirectUri(faker.internet().url())
@@ -30,3 +31,4 @@ public class RegisteredClientProvider implements DataProvider<RegisteredClient> 
 
 
 }
+
