@@ -23,6 +23,7 @@ public class NewRegisteringClientDtoProvider implements DataProvider<NewRegister
     public NewRegisteringClientDto provide() {
         var dto = new NewRegisteringClientDto();
 
+        dto.setClientId(faker.code().isbn10(false));
         dto.setClientName(faker.name().firstName() + " Client");
         dto.setRedirectUris(
             Set.of(
@@ -52,3 +53,5 @@ public class NewRegisteringClientDtoProvider implements DataProvider<NewRegister
 
 
 }
+
+

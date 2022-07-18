@@ -7,19 +7,21 @@ import com.julianduru.oauthservice.data.NewRegisteringClientProvider;
 import com.julianduru.oauthservice.data.ResourceServerDataProvider;
 import com.julianduru.oauthservice.dto.NewRegisteringClient;
 import com.julianduru.oauthservice.entity.ResourceServer;
-import com.julianduru.util.JSONUtil;
+import com.julianduru.oauthservice.graphql.GraphQLTemplateJwtTokenBuilder;
 import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 /**
  * created by julian on 22/04/2022
  */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ClientMutationResolverTest extends BaseServiceIntegrationTest {
 
 
@@ -28,11 +30,22 @@ public class ClientMutationResolverTest extends BaseServiceIntegrationTest {
 
 
     @Autowired
+    private GraphQLTemplateJwtTokenBuilder jwtTokenBuilder;
+
+
+    @Autowired
     private NewRegisteringClientProvider clientProvider;
 
 
     @Autowired
     private ResourceServerDataProvider resourceServerDataProvider;
+
+
+
+    @BeforeAll
+    public void beforeClass() {
+        jwtTokenBuilder.setupTemplate(testTemplate);
+    }
 
 
     @Test

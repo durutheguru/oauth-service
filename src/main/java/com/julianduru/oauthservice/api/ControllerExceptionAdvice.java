@@ -1,8 +1,10 @@
 package com.julianduru.oauthservice.api;
 
 
+import com.julianduru.oauthservice.api.ApiErrorResponse;
 import com.julianduru.oauthservice.exception.HttpStatusAwareException;
 import com.julianduru.oauthservice.exception.RuntimeServiceException;
+import com.julianduru.oauthservice.exception.UnprocessableInputException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.Ordered;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +45,13 @@ public class ControllerExceptionAdvice extends ResponseEntityExceptionHandler {
     }
 
 
+    @ExceptionHandler({EntityNotFoundException.class})
+    public ResponseEntity<ApiErrorResponse> handleEntityNotFoundException(EntityNotFoundException e) {
+        log.error("Controller Exception: " + e.getMessage(), e);
+        return new ResponseEntity<>(new ApiErrorResponse(e), HttpStatus.NOT_FOUND);
+    }
+
+
     @ExceptionHandler({RuntimeServiceException.class})
     public ResponseEntity<ApiErrorResponse> handleRuntimeServiceExceptions(RuntimeServiceException e) {
         log.error("Controller Exception: " + e.getMessage(), e);
@@ -56,7 +66,15 @@ public class ControllerExceptionAdvice extends ResponseEntityExceptionHandler {
     }
 
 
+    @ExceptionHandler({SecurityException.class})
+    public ResponseEntity<ApiErrorResponse> handleInvalidLoginCredentialsException(Exception e) {
+        log.error("Controller Exception: " + e.getMessage(), e);
+        return new ResponseEntity<>(new ApiErrorResponse(e), HttpStatus.UNAUTHORIZED);
+    }
+
+
     @ExceptionHandler({
+        UnprocessableInputException.class,
         IllegalArgumentException.class,
     })
     public ResponseEntity<ApiErrorResponse> handleInvalidInputException(Exception e) {
@@ -115,6 +133,7 @@ public class ControllerExceptionAdvice extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(messages, HttpStatus.BAD_REQUEST);
     }
+
 
     @Override
     protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

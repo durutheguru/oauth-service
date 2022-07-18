@@ -5,8 +5,11 @@ import com.julianduru.oauthservice.BaseServiceIntegrationTest;
 import com.julianduru.oauthservice.data.CreateResourceServerDataProvider;
 import com.julianduru.oauthservice.data.ResourceServerDataProvider;
 import com.julianduru.oauthservice.entity.ServerStatus;
+import com.julianduru.oauthservice.graphql.GraphQLTemplateJwtTokenBuilder;
 import com.julianduru.oauthservice.repository.ResourceServerRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 
@@ -15,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * created by julian on 24/04/2022
  */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ResourceServerMutationResolverTest extends BaseServiceIntegrationTest {
 
 
@@ -23,11 +27,22 @@ public class ResourceServerMutationResolverTest extends BaseServiceIntegrationTe
 
 
     @Autowired
+    private GraphQLTemplateJwtTokenBuilder jwtTokenBuilder;
+
+
+    @Autowired
     private CreateResourceServerDataProvider createResourceServerDataProvider;
 
 
     @Autowired
     private ResourceServerDataProvider resourceServerDataProvider;
+
+
+
+    @BeforeAll
+    public void beforeClass() {
+        jwtTokenBuilder.setupTemplate(testTemplate);
+    }
 
 
     @Test

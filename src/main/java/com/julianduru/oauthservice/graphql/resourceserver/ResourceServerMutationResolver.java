@@ -20,7 +20,6 @@ public class ResourceServerMutationResolver implements GraphQLMutationResolver {
     private final ResourceServerService resourceServerService;
 
 
-    @Transactional
     public ResourceServer registerResourceServer(CreateResourceServerRequest request) {
         ValidatorUtil.validate(request);
 
