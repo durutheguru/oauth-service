@@ -9,18 +9,24 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * created by julian on 24/04/2022
  */
 @Service
-public record ResourceServerServiceImpl(
-    ResourceServerRepository resourceServerRepository,
-    CreateResourceServerComponent createResourceServerComponent
-) implements ResourceServerService {
+@RequiredArgsConstructor
+public class ResourceServerServiceImpl implements ResourceServerService {
+
+
+    private final ResourceServerRepository resourceServerRepository;
+
+
+    private final CreateResourceServerComponent createResourceServerComponent;
 
 
     @Override
+    @Transactional
     public ResourceServer createResourceServer(CreateResourceServerRequest request) {
         return createResourceServerComponent.newResourceServer(request);
     }
@@ -35,4 +41,5 @@ public record ResourceServerServiceImpl(
 
 
 }
+
 

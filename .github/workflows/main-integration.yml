@@ -39,6 +39,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
+          distribution: zulu
 
       - name: Evaluate New Artifact Version
         run: |
@@ -48,7 +49,7 @@ jobs:
 
       - name: Maven Package
         run: |
-          mvn -e package -s settings.xml -f pom.xml
+          mvn -e package -s settings.xml -f pom.xml -Dorg.jooq.skip
 
       - name: Login to Docker
         run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}

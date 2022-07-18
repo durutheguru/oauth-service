@@ -1,0 +1,28 @@
+
+type UserDataDto {
+
+    username: String!
+    password: String
+    firstName: String
+    lastName: String
+    email: String
+    additionalInfo: String
+    locked: Boolean
+    credentialsExpired: Boolean
+
+}
+
+
+input UserDataInputDto {
+
+    username: String!
+    password: String!
+    firstName: String!
+    lastName: String!
+    email: String!
+    authorities: [String]
+    additionalInfo: String
+    locked: Boolean
+    credentialsExpired: Boolean
+
+}

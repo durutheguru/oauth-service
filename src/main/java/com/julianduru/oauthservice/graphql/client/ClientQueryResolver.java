@@ -1,10 +1,14 @@
 package com.julianduru.oauthservice.graphql.client;
 
+import com.julianduru.oauthservice.dto.ClientDto;
 import com.julianduru.oauthservice.dto.PagedClientResponse;
+import com.julianduru.oauthservice.module.client.ClientService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * created by julian on 22/04/2022
@@ -14,14 +18,14 @@ import org.springframework.stereotype.Component;
 public class ClientQueryResolver implements GraphQLQueryResolver {
 
 
-    private final RegisteredClientRepository clientRepository;
+    private final ClientService clientService;
 
 
-    public PagedClientResponse fetchClients(int page, int size) {
-        //TODO: possible implementation for fetching clients...
-        return PagedClientResponse.empty();
+    public List<ClientDto> fetchClients(int page, int size) {
+        return clientService.fetchClients(page, size).stream().map(ClientDto::fromRegisteredClient).toList();
     }
 
 
 }
+
 

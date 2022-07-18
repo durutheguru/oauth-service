@@ -3,14 +3,17 @@ package com.julianduru.oauthservice.module.client;
 import com.julianduru.oauthservice.dto.ClientDto;
 import com.julianduru.oauthservice.dto.NewRegisteringClient;
 import com.julianduru.oauthservice.dto.NewRegisteringClientDto;
+import com.julianduru.oauthservice.dto.RegisteredClientDto;
 import com.julianduru.oauthservice.exception.UnprocessableInputException;
 import com.julianduru.oauthservice.module.client.component.NewRegisteringClientSettingsValidator;
+import com.julianduru.oauthservice.module.client.component.RegisteredClientFetcher;
 import com.julianduru.oauthservice.module.config.RegisteringClientConfigurer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * created by julian on 13/04/2022
@@ -32,31 +35,44 @@ public class ClientServiceImpl implements ClientService {
     private final NewRegisteringClientSettingsValidator clientSettingsValidator;
 
 
+    private final RegisteredClientFetcher registeredClientFetcher;
+
+
 
     @Override
     public ClientDto registerClient(NewRegisteringClient client) {
-        validateClientIDNotExists(client);
+        return registerClient(NewRegisteringClientDto.from(client));
+    }
 
-        var clientDto = clientConfigurer.init(
-            NewRegisteringClientDto
-                .from(client)
-                .toRegisteredClientDto()
+
+    @Override
+    public ClientDto registerClient(NewRegisteringClientDto clientDto) {
+        validateClientIDNotExists(clientDto.getClientId());
+
+        var registeredClientDto = clientConfigurer.init(
+            clientDto.toRegisteredClientDto()
         );
 
-        var registeredClient = clientDto.mapToNewEntity(passwordEncoder);
+        var registeredClient = registeredClientDto.mapToNewEntity(passwordEncoder);
         clientRepository.save(clientSettingsValidator.valid(registeredClient));
 
         // TODO: email dispatch of credentials to admin email ...
 
-        return ClientDto.fromRegisteredClient(clientDto.withId(registeredClient.getId()));
+        return ClientDto.fromRegisteredClient(registeredClientDto.withId(registeredClient.getId()));
     }
 
 
-    private void validateClientIDNotExists(NewRegisteringClient client) {
-        var existingClient = clientRepository.findByClientId(client.getClientId());
+    @Override
+    public List<RegisteredClientDto> fetchClients(int page, int size) {
+        return registeredClientFetcher.fetchClients();
+    }
+
+
+    private void validateClientIDNotExists(String clientId) {
+        var existingClient = clientRepository.findByClientId(clientId);
         if (existingClient != null) {
             throw new UnprocessableInputException(
-                String.format("Client ID %s already exists", client.getClientId())
+                String.format("Client ID %s already exists", clientId)
             );
         }
     }

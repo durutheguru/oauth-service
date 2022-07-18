@@ -19,8 +19,10 @@ import java.util.Set;
 @Data
 public class NewRegisteringClientDto {
 
+
     @NotEmpty(message = "Client ID is required.")
     private String clientId;
+
 
     @NotEmpty(message = "Client Name is required. Cannot be empty.")
     private String clientName;
@@ -133,6 +135,5 @@ public class NewRegisteringClientDto {
 
 
 }
-
 
 

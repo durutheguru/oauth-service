@@ -6,10 +6,12 @@ import com.julianduru.oauthservice.dto.NewRegisteringClient;
 import com.julianduru.oauthservice.entity.ResourceServer;
 import com.julianduru.util.test.DataProvider;
 import org.json.JSONObject;
+import org.springframework.security.oauth2.core.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.config.ConfigurationSettingNames;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,8 +29,10 @@ public class NewRegisteringClientProvider implements DataProvider<NewRegistering
         client.setClientId(faker.code().isbn10(false));
         client.setClientName(faker.name().fullName() + " Client");
         client.setRedirectUris(
-            Set.of(
-                "https://oidcdebugger.com/debug"
+            new HashSet<>(
+                Set.of(
+                    "https://oidcdebugger.com/debug"
+                )
             )
         );
         client.setTokenSettingsMap(

@@ -34,3 +34,4 @@
         <addForeignKeyConstraint baseColumnNames="resource_server_id" baseTableName="resource_server_allowed_scopes" constraintName="FKhf7ry24vox7a9po1e108jd3dg" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="resource_server"/>
     </changeSet>
 </databaseChangeLog>
+
