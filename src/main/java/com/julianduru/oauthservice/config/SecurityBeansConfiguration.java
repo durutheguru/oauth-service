@@ -1,5 +1,6 @@
 package com.julianduru.oauthservice.config;
 
+import com.julianduru.oauthservice.config.authproviders.ClientAuthenticationProvider;
 import com.julianduru.oauthservice.config.properties.BootstrapProperties;
 import com.julianduru.oauthservice.repository.UserDataRepository;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -11,6 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.config.annotation.authentication.ProviderManagerBuilder;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -130,6 +135,16 @@ public class SecurityBeansConfiguration {
         return ProviderSettings.builder()
             .issuer(issuerUrl)
             .build();
+    }
+
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+        AuthenticationManagerBuilder authenticationManagerBuilder,
+        ClientAuthenticationProvider clientAuthenticationProvider
+    ) {
+        return authenticationManagerBuilder
+            .authenticationProvider(clientAuthenticationProvider).getOrBuild();
     }
 
 

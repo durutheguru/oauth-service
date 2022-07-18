@@ -6,23 +6,31 @@ import com.julianduru.oauthservice.data.NewRegisteringClientProvider;
 import com.julianduru.oauthservice.data.RegisteredClientProvider;
 import com.julianduru.oauthservice.data.UserDataDtoProvider;
 import com.julianduru.oauthservice.module.client.ClientService;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.token.TokenService;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2ClientAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
+import org.springframework.security.oauth2.server.authorization.context.ProviderContext;
 import org.springframework.security.oauth2.server.authorization.token.DefaultOAuth2TokenContext;
-import org.springframework.security.oauth2.server.authorization.token.JwtGenerator;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
+import org.springframework.test.context.ActiveProfiles;
+
+import java.util.HashSet;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * created by julian on 05/06/2022
  */
+@ActiveProfiles({"h2"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserMutationResolverTest extends BaseServiceIntegrationTest {
 
@@ -32,7 +40,7 @@ public class UserMutationResolverTest extends BaseServiceIntegrationTest {
 
 
     @Autowired
-    private JwtGenerator jwtGenerator;
+    private OAuth2TokenGenerator<?> jwtGenerator;
 
 
     @Autowired
@@ -55,11 +63,17 @@ public class UserMutationResolverTest extends BaseServiceIntegrationTest {
     private UserDataDtoProvider userDataDtoProvider;
 
 
-    private TokenService authTokenServices;
+    @Autowired
+    private ProviderSettings providerSettings;
+
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
 
 
-    @BeforeClass
+
+    @BeforeAll
     public void beforeClass() {
         var client = clientProvider.provide();
         var clientDto = clientService.registerClient(client);
@@ -73,15 +87,24 @@ public class UserMutationResolverTest extends BaseServiceIntegrationTest {
             DefaultOAuth2TokenContext.builder()
                 .principal(
                     new OAuth2ClientAuthenticationToken(
-                        registeredClient, ClientAuthenticationMethod.CLIENT_SECRET_BASIC,
+                        registeredClient, ClientAuthenticationMethod.CLIENT_SECRET_JWT,
                         clientDto.getClientSecret()
                     )
                 )
                 .registeredClient(registeredClient)
                 .tokenType(OAuth2TokenType.ACCESS_TOKEN)
+                .providerContext(
+                    new ProviderContext(
+                        providerSettings,
+                        () -> providerSettings.getIssuer()
+                    )
+                )
+                .authorizedScopes(
+                    new HashSet<>(List.of("OPENID"))
+                )
+                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .build()
         );
-//        JWT
 
         if (jwt == null) {
             throw new IllegalStateException("JWT was empty");
@@ -125,6 +148,9 @@ public class UserMutationResolverTest extends BaseServiceIntegrationTest {
             );
 
         assertThat(response.isOk()).isTrue();
+
+        var userDetails = userDetailsService.loadUserByUsername(userDto.getUsername());
+        assertThat(userDetails).isNotNull();
     }
 
 

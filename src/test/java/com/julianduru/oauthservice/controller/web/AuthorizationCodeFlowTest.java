@@ -35,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * created by julian on 21/04/2022
  */
 @Slf4j
-@ActiveProfiles({"h2"})
 public class AuthorizationCodeFlowTest extends BaseControllerTest {
 
 

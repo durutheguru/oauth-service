@@ -6,6 +6,7 @@ import com.julianduru.oauthservice.dto.NewRegisteringClient;
 import com.julianduru.oauthservice.entity.ResourceServer;
 import com.julianduru.util.test.DataProvider;
 import org.json.JSONObject;
+import org.springframework.security.oauth2.core.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.config.ConfigurationSettingNames;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +41,9 @@ public class NewRegisteringClientProvider implements DataProvider<NewRegistering
                     ConfigurationSettingNames.Token.ACCESS_TOKEN_TIME_TO_LIVE,
                     1000,
                     ConfigurationSettingNames.Token.REUSE_REFRESH_TOKENS,
-                    true
+                    true,
+                    ConfigurationSettingNames.Token.ACCESS_TOKEN_FORMAT,
+                    OAuth2TokenFormat.REFERENCE
                 )
             ).toString()
         );
