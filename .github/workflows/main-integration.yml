@@ -39,6 +39,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
+          distribution: zulu
 
       - name: Evaluate New Artifact Version
         run: |
