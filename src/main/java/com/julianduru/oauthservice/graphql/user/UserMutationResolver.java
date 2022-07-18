@@ -6,6 +6,8 @@ import graphql.kickstart.tools.GraphQLMutationResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.validation.Valid;
+
 /**
  * created by julian on 05/06/2022
  */
@@ -17,7 +19,7 @@ public class UserMutationResolver implements GraphQLMutationResolver {
     private final UserService userService;
 
 
-    public UserDataDto saveUser(UserDataDto userDto) throws Exception {
+    public UserDataDto saveUser(@Valid UserDataDto userDto) throws Exception {
         return userService.saveUser(userDto).dto();
     }
 
