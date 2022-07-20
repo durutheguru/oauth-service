@@ -15,6 +15,8 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.UUID;
 
+import static org.springframework.security.oauth2.core.oidc.OidcScopes.OPENID;
+
 /**
  * created by julian on 31/05/2022
  */
@@ -58,6 +60,7 @@ public class OAuthJdbcRegisteredClientRepository extends JdbcRegisteredClientRep
                 )
             )
             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+            .scope(OPENID)
             .build();
 
         save(client);
