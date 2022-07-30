@@ -2,7 +2,6 @@ package com.julianduru.oauthservice.graphql.client;
 
 
 import com.julianduru.oauthservice.dto.ClientDto;
-import com.julianduru.oauthservice.dto.NewRegisteringClientDto;
 import com.julianduru.oauthservice.dto.NewRegisteringClient;
 import com.julianduru.oauthservice.module.client.ClientService;
 import com.julianduru.util.ValidatorUtil;
@@ -28,6 +27,5 @@ public class ClientMutationResolver implements GraphQLMutationResolver {
 
 
 }
-
 
 
