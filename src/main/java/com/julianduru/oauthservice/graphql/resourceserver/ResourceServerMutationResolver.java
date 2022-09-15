@@ -7,7 +7,6 @@ import com.julianduru.util.ValidatorUtil;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * created by julian on 24/04/2022
