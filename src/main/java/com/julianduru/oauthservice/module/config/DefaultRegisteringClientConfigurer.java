@@ -80,15 +80,26 @@ public class DefaultRegisteringClientConfigurer implements RegisteringClientConf
     public RegisteredClientDto init(RegisteredClientDto clientDto) {
         RegisteringClientConfigurer.super.init(clientDto);
 
+        initClientId(clientDto);
+        initClientSecret(clientDto);
+
+        return clientDto;
+    }
+
+
+    private void initClientId(RegisteredClientDto clientDto) {
         if (!StringUtils.hasText(clientDto.getClientId())) {
             clientDto.setClientId(UUID.randomUUID().toString());
         }
-
         clientDto.setClientIdIssuedAt(Instant.now());
-        clientDto.setClientSecret(UUID.randomUUID() + UUID.randomUUID().toString());
-        clientDto.setClientSecretExpiresAt(Instant.now().plusSeconds(clientSecretTimeToLive));
+    }
 
-        return clientDto;
+
+    private void initClientSecret(RegisteredClientDto clientDto) {
+        if (!StringUtils.hasText(clientDto.getClientSecret())) {
+            clientDto.setClientSecret(UUID.randomUUID() + UUID.randomUUID().toString());
+        }
+        clientDto.setClientSecretExpiresAt(Instant.now().plusSeconds(clientSecretTimeToLive));
     }
 
 

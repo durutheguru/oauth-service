@@ -24,6 +24,9 @@ public class NewRegisteringClientDto {
     private String clientId;
 
 
+    private String clientSecret;
+
+
     @NotEmpty(message = "Client Name is required. Cannot be empty.")
     private String clientName;
 
@@ -43,6 +46,7 @@ public class NewRegisteringClientDto {
         var dto = new NewRegisteringClientDto();
 
         dto.setClientId(client.getClientId());
+        dto.setClientSecret(client.getClientSecret());
         dto.setClientName(client.getClientName());
         dto.setRedirectUris(client.getRedirectUris());
         if (StringUtils.hasText(client.getClientSettingsMap())) {
@@ -64,6 +68,9 @@ public class NewRegisteringClientDto {
         var registeredClientDto = new RegisteredClientDto();
 
         registeredClientDto.setClientId(getClientId());
+        if (StringUtils.hasText(getClientSecret())) {
+            registeredClientDto.setClientSecret(getClientSecret());
+        }
         registeredClientDto.setClientName(getClientName());
         registeredClientDto.setRedirectUris(getRedirectUris());
         registeredClientDto.setClientSettings(buildClientSettings());
