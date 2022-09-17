@@ -17,6 +17,9 @@ public class NewRegisteringClient {
     private String clientId;
 
 
+    private String clientSecret;
+
+
     @NotEmpty(message = "Client Name is required. Cannot be empty.")
     private String clientName;
 
@@ -30,7 +33,6 @@ public class NewRegisteringClient {
 
 
     private String tokenSettingsMap;
-
 
 
 }
