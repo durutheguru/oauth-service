@@ -59,6 +59,46 @@ public class ClientMutationResolverTest extends BaseServiceIntegrationTest {
                     mutation {
                         registerClient(client: {
                             clientId: "%s",
+                            clientSecret: "%s",
+                            clientName: "%s",
+                            redirectUris: [
+                                "%s"
+                            ]
+                        }) {
+                            id
+                            clientId
+                            clientSecret
+                            clientName
+                            redirectUris
+                        }
+                    }
+                    """,
+                    clientDto.getClientId(),
+                    clientDto.getClientSecret(),
+                    clientDto.getClientName(),
+                    clientDto.getRedirectUris().stream().findAny().get()
+                ), "{}"
+            );
+
+        assertThat(response.isOk()).isTrue();
+
+        assertThat(response.get("$.data.registerClient.id")).isNotBlank();
+        assertThat(response.get("$.data.registerClient.clientId")).isNotBlank();
+        assertThat(response.get("$.data.registerClient.clientSecret")).isNotBlank();
+    }
+
+
+    @Test
+    public void testRegisteringNewClientWithoutPassingSecret() throws Exception {
+        var clientDto = clientProvider.provide();
+
+        var response = testTemplate
+            .postMultipart(
+                String.format(
+                    """
+                    mutation {
+                        registerClient(client: {
+                            clientId: "%s",
                             clientName: "%s",
                             redirectUris: [
                                 "%s"

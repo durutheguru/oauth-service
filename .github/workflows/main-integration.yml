@@ -1,4 +1,4 @@
-name: Master Branch CI
+name: Main Branch CI
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -57,13 +57,16 @@ jobs:
       - name: Build Docker Image
         run: |
           RELEASE_TAG=${{ steps.gitversion.outputs.semVer }}
-          docker build --build-arg release_version=$RELEASE_TAG --platform linux/arm64/v8 -t ${{ secrets.DOCKERHUB_USERNAME }}/oauth-service:latest -t ${{ secrets.DOCKERHUB_USERNAME }}/oauth-service:$RELEASE_TAG .
+          docker build --build-arg release_version=$RELEASE_TAG -t ${{ secrets.DOCKERHUB_USERNAME }}/oauth-service:latest -t ${{ secrets.DOCKERHUB_USERNAME }}/oauth-service:$RELEASE_TAG .
+          docker build --build-arg release_version=$RELEASE_TAG --platform linux/arm64/v8 -t ${{ secrets.DOCKERHUB_USERNAME }}/oauth-service:arm64v8-latest -t ${{ secrets.DOCKERHUB_USERNAME }}/oauth-service:arm64v8-$RELEASE_TAG .
 
       - name: Publish Docker image
         run: |
           RELEASE_TAG=${{ steps.gitversion.outputs.semVer }}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/oauth-service:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/oauth-service:$RELEASE_TAG
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/oauth-service:arm64v8-latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/oauth-service:arm64v8-$RELEASE_TAG
           echo "Pushed Docker Images with New Release"
 
       - name: Upgrading Version

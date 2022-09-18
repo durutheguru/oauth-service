@@ -23,11 +23,11 @@ type PagedClientsResponse {
 
 input NewRegisteringClient {
     clientId: String!
+    clientSecret: String
     clientName: String!
     redirectUris: [String]!
     clientSettingsMap: String
     tokenSettingsMap: String
-
 }
 
 
