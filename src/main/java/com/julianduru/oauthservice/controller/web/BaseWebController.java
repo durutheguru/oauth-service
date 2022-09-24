@@ -52,6 +52,8 @@ public abstract class BaseWebController extends Controller {
                 .map(Object::toString).toList()
         );
 
+        list.add("/compiled/app.css");
+
         return list;
     }
 

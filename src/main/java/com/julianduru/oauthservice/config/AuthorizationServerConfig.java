@@ -75,6 +75,19 @@ public class AuthorizationServerConfig {
         HttpSecurity http
     ) throws Exception {
         http
+            .authorizeRequests()
+            .antMatchers(
+                "/signup",
+                "/vendor/**/*.js",
+                "/vendor/**/*.css",
+                "/theme/**/*.js",
+                "/theme/**/*.css",
+                "/vendor/**/*.map",
+                "/vendor/**/*.woff*",
+                "/compiled/*"
+            )
+            .permitAll()
+            .and()
             .requestMatchers(
                 customizer -> customizer
                     .mvcMatchers("/**")

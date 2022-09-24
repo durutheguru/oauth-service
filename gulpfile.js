@@ -1,8 +1,9 @@
 var gulp = require('gulp');
 var cssnano = require('gulp-cssnano');
-var sass = require('gulp-sass');
+var sass = require('gulp-dart-sass');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
+var watch = require('gulp-watch');
 
 var gulp_helper = require("./internal/gulp_helper");
 var ui_build_paths = require("./src/main/resources/ui_build_paths.json");
@@ -53,16 +54,6 @@ gulp.task('sassCompile', function () {
  /**
   * Final CSS Compile task
   */
-// gulp.task('finalCSSCompile', function () {
-//     return gulp.src([
-//        './src/main/resources/static/compiled/compiled_vendor.css',
-//        './src/main/resources/static/theme/css/style.css',
-//        './src/main/resources/static/compiled/app.css'
-//        ].append())
-//         .pipe(concat("compiled.css"))
-//         .pipe(cssnano())
-//         .pipe(gulp.dest('./src/main/resources/static/compiled'));
-// });
 
 gulp.task('finalCSSCompile', function () {
      return gulp.src([
@@ -166,3 +157,15 @@ gulp.task(
  * End Default task
  * #############################################
  */
+
+
+gulp.task(
+    "watch-sass", function() {
+        gulp.watch(
+            "./src/main/resources/static/app/sass/**/*.scss",
+            gulp.series('sassCompile')
+        );
+    }
+);
+
+

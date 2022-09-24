@@ -15,23 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 public class SignUpController extends AnonymousUserWebController {
 
 
-    @Value("${code.config.app-mode:development}")
-    private String mode;
-
 
     @RequestMapping("/signup")
     public String signup(Model model, HttpServletRequest request) {
-        var clientId = request.getParameter("client_id");
+        augmentModelWithAssets(model);
 
+        var clientId = request.getParameter("client_id");
         model.addAttribute("client_id", clientId);
-        model.addAttribute(
-            "cssFiles",
-            AuthServerConstants.AppModes.BUILD.equalsIgnoreCase(mode) ? compiledCssFiles() : cssFiles()
-        );
-        model.addAttribute(
-            "jsFiles",
-            AuthServerConstants.AppModes.BUILD.equalsIgnoreCase(mode) ? compiledJsFiles() : jsFiles()
-        );
 
         return "signup";
     }
