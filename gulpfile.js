@@ -5,6 +5,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 
 var gulp_helper = require("./internal/gulp_helper");
+var ui_build_paths = require("./src/main/resources/ui_build_paths.json");
 
 
 
@@ -12,17 +13,9 @@ var gulp_helper = require("./internal/gulp_helper");
  * CSS task
  */
 
-var VENDOR_CSS_ROOT = "./src/main/resources/static/vendor";
+var VENDOR_CSS_ROOT = "./src/main/resources/static";
 
-var cssVendorList = [
-    "/bootstrap/css/bootstrap.min.css",
-    "/bootstrap-icons/bootstrap-icons.css",
-    "/boxicons/css/boxicons.min.css",
-    "/quill/quill.snow.css",
-    "/quill/quill.bubble.css",
-    "/remixicon/remixicon.css",
-    "/simple-datatables/style.css"
-];
+var cssVendorList = ui_build_paths.cssVendorList;
 
 gulp.task('vendorCSSMin', function() {
 
@@ -60,16 +53,28 @@ gulp.task('sassCompile', function () {
  /**
   * Final CSS Compile task
   */
- gulp.task('finalCSSCompile', function () {
+// gulp.task('finalCSSCompile', function () {
+//     return gulp.src([
+//        './src/main/resources/static/compiled/compiled_vendor.css',
+//        './src/main/resources/static/theme/css/style.css',
+//        './src/main/resources/static/compiled/app.css'
+//        ].append())
+//         .pipe(concat("compiled.css"))
+//         .pipe(cssnano())
+//         .pipe(gulp.dest('./src/main/resources/static/compiled'));
+// });
+
+gulp.task('finalCSSCompile', function () {
      return gulp.src([
         './src/main/resources/static/compiled/compiled_vendor.css',
-        './src/main/resources/static/theme/css/style.css',
+        './src/main/resources/static' + ui_build_paths.themeCSSFiles[0],
         './src/main/resources/static/compiled/app.css'
         ])
          .pipe(concat("compiled.css"))
          .pipe(cssnano())
          .pipe(gulp.dest('./src/main/resources/static/compiled'));
  });
+
 
  /**
   * End Final CSS Compile task
@@ -82,18 +87,9 @@ gulp.task('sassCompile', function () {
  * Javascript task
  */
 
-var VENDOR_JS_ROOT = "./src/main/resources/static/vendor";
+var VENDOR_JS_ROOT = "./src/main/resources/static";
 
-var vendorJSList = gulp_helper.mergePathRoot(VENDOR_JS_ROOT, [
-    "/apexcharts/apexcharts.min.js",
-    "/bootstrap/js/bootstrap.bundle.min.js",
-    "/chart.js/chart.min.js",
-    "/echarts/echarts.min.js",
-    "/quill/quill.min.js",
-    "/simple-datatables/simple-datatables.js",
-    "/tinymce/tinymce.min.js",
-    "/php-email-form/validate.js"
-]);
+var vendorJSList = gulp_helper.mergePathRoot(VENDOR_JS_ROOT, ui_build_paths.jsVendorList);
 
 
 gulp.task('vendorJSMin', function() {
@@ -135,17 +131,17 @@ gulp.task('jsAppCompile', function () {
  gulp.task('finalJSCompile', function () {
      return gulp.src([
         './src/main/resources/static/compiled/compiled_vendor.js',
-        './src/main/resources/static/theme/js/main.js',
+        './src/main/resources/static' + ui_build_paths.themeJSFiles[0],
         './src/main/resources/static/compiled/app.js'
         ])
          .pipe(concat("compiled.js"))
          .pipe(gulp.dest('./src/main/resources/static/compiled'));
  });
 
- /**
-  * End Final JS Compile task
-  * #############################################
-  */
+/**
+* End Final JS Compile task
+* #############################################
+*/
 
 
 

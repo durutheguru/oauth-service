@@ -32,6 +32,15 @@ public interface AuthServerConstants {
     }
 
 
+    interface AppModes {
+
+        String BUILD = "build";
+
+        String DEV = "development";
+
+    }
+
+
 }
 
 

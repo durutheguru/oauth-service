@@ -21,7 +21,7 @@ import javax.validation.Valid;
 @RequestMapping(ClientRegistrationController.PATH)
 public class ClientRegistrationController {
 
-    public static final String PATH = "/api/register_client";
+    public static final String PATH = "/api/v1/register_client";
 
     private final ClientService clientService;
 
