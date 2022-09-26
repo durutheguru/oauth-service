@@ -31,8 +31,7 @@ public class AuthorizationServerConfig {
             .requestMatchers(
                 customizer -> {
                     customizer.mvcMatchers(
-                        "/api/register_client",
-                        "/api/register_resource_server"
+                        "/api/v1/register_client"
                     );
                 }
             )
@@ -75,6 +74,19 @@ public class AuthorizationServerConfig {
         HttpSecurity http
     ) throws Exception {
         http
+            .authorizeRequests()
+            .antMatchers(
+                "/signup",
+                "/vendor/**/*.js",
+                "/vendor/**/*.css",
+                "/theme/**/*.js",
+                "/theme/**/*.css",
+                "/vendor/**/*.map",
+                "/vendor/**/*.woff*",
+                "/compiled/*"
+            )
+            .permitAll()
+            .and()
             .requestMatchers(
                 customizer -> customizer
                     .mvcMatchers("/**")

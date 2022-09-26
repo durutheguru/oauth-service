@@ -55,6 +55,11 @@ public class OperationStatus<T> {
     }
 
 
+    public static <T> OperationStatus<T>  of(T data) {
+        return new OperationStatus<>(Value.SUCCESS, null, data);
+    }
+
+
     public static OperationStatus<String> failure() {
         return new OperationStatus<>(Value.FAILURE);
     }
