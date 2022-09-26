@@ -61,6 +61,7 @@ public class AuthorizationServerConfig {
             )
             .csrf(csrf -> csrf.ignoringRequestMatchers(endpointMatcher).disable())
             .formLogin()
+            .loginPage("/login.html")
             .and()
             .apply(configurer);
 
@@ -96,6 +97,7 @@ public class AuthorizationServerConfig {
             .anyRequest().authenticated()
             .and()
             .formLogin()
+            .loginPage("/login")
             .and()
             .oauth2ResourceServer().jwt();
 

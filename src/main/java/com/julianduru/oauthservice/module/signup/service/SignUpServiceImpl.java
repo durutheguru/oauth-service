@@ -5,6 +5,7 @@ import com.julianduru.oauthservice.module.resourceserver.ResourceServerService;
 import com.julianduru.oauthservice.module.signup.dto.SignUpUserDto;
 import com.julianduru.oauthservice.module.user.UserService;
 import com.julianduru.oauthservice.util.ClientUtil;
+import com.julianduru.util.ValidatorUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -32,6 +33,11 @@ public class SignUpServiceImpl implements SignUpService {
 
     @Override
     public String signupUser(SignUpUserDto dto) {
+        ValidatorUtil.validate(dto);
+
+        var client = clientService.fetchClient(dto.getClientId());
+        ClientUtil.verifyClientCanAccessResource(client, dto.getResourceServerId());
+
         var resourceServer = resourceServerService.fetchResourceServer(
             dto.getResourceServerId()
         ).orElseThrow(
@@ -39,9 +45,6 @@ public class SignUpServiceImpl implements SignUpService {
                 String.format("Resource Server %s not found", dto.getResourceServerId())
             )
         );
-
-        var client = clientService.fetchClient(dto.getClientId());
-        ClientUtil.verifyClientCanAccessResource(client, dto.getResourceServerId());
 
         var userData = dto.toUserDataDto();
         userData.setAuthorities(resourceServer.getUserAuthoritiesOnSignUp().stream().toList());
