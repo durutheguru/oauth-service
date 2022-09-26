@@ -1,5 +1,6 @@
 package com.julianduru.oauthservice.controller.api;
 
+import com.julianduru.oauthservice.AuthServerConstants;
 import com.julianduru.oauthservice.dto.ClientDto;
 import com.julianduru.oauthservice.dto.NewRegisteringClient;
 import com.julianduru.oauthservice.dto.NewRegisteringClientDto;
@@ -21,7 +22,7 @@ import javax.validation.Valid;
 @RequestMapping(ClientRegistrationController.PATH)
 public class ClientRegistrationController {
 
-    public static final String PATH = "/api/v1/register_client";
+    public static final String PATH = AuthServerConstants.API_BASE + "/register_client";
 
     private final ClientService clientService;
 

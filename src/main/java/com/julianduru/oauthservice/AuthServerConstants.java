@@ -6,7 +6,7 @@ package com.julianduru.oauthservice;
 public interface AuthServerConstants {
 
 
-    String API_VERSION = "/api/v1";
+    String API_BASE = "/api/v1";
 
 
     String DEFAULT_AUTHORIZATION_ENDPOINT_URI = "/oauth2/authorize";

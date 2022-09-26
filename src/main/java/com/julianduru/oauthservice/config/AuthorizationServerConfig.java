@@ -31,8 +31,7 @@ public class AuthorizationServerConfig {
             .requestMatchers(
                 customizer -> {
                     customizer.mvcMatchers(
-                        "/api/register_client",
-                        "/api/register_resource_server"
+                        "/api/v1/register_client"
                     );
                 }
             )
