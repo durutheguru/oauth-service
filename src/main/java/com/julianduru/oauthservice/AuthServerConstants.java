@@ -6,7 +6,7 @@ package com.julianduru.oauthservice;
 public interface AuthServerConstants {
 
 
-    String API_VERSION = "/api/v1";
+    String API_BASE = "/api/v1";
 
 
     String DEFAULT_AUTHORIZATION_ENDPOINT_URI = "/oauth2/authorize";
@@ -28,6 +28,15 @@ public interface AuthServerConstants {
 
 
         String EMAIL = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
+
+    }
+
+
+    interface AppModes {
+
+        String BUILD = "build";
+
+        String DEV = "development";
 
     }
 
