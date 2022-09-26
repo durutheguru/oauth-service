@@ -4,6 +4,7 @@ input CreateResourceServer {
 
     serverId: String!
     allowedScopes: [String]!
+    userAuthoritiesOnSignUp: [String]
 
 }
 

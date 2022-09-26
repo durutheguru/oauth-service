@@ -22,5 +22,8 @@ public class CreateResourceServerRequest {
     private Set<String> allowedScopes;
 
 
+    private Set<String> userAuthoritiesOnSignUp;
+
+
 }
 

@@ -23,6 +23,10 @@ public class ResourceServer extends BaseEntity {
     private Set<String> allowedScopes;
 
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> userAuthoritiesOnSignUp;
+
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private ServerStatus status;
