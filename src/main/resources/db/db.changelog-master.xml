@@ -10,6 +10,7 @@
     <include file="classpath:db/changelog/migration.00001.xml" relativeToChangelogFile="false" />
     <include file="classpath:db/changelog/migration.00002.xml" relativeToChangelogFile="false" />
     <include file="classpath:db/changelog/migration.00003.xml" relativeToChangelogFile="false" />
+    <include file="classpath:db/changelog/migration.00004.xml" relativeToChangelogFile="false" />
 
 
 </databaseChangeLog>

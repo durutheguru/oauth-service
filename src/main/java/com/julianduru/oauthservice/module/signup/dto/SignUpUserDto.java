@@ -12,6 +12,12 @@ import java.util.List;
 public class SignUpUserDto {
 
 
+    private String clientId;
+
+
+    private String resourceServerId;
+
+
     private String username;
 
 
@@ -30,8 +36,6 @@ public class SignUpUserDto {
     private String email;
 
 
-    private List<String> authorities;
-
 
     public UserDataDto toUserDataDto() {
         var dto = new UserDataDto();
@@ -41,7 +45,6 @@ public class SignUpUserDto {
         dto.setFirstName(getFirstName());
         dto.setLastName(getLastName());
         dto.setEmail(getEmail());
-        dto.setAuthorities(getAuthorities());
 
         return dto;
     }

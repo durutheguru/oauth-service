@@ -1,5 +1,6 @@
 package com.julianduru.oauthservice.module.client;
 
+import com.github.javafaker.Faker;
 import com.julianduru.oauthservice.dto.ClientDto;
 import com.julianduru.oauthservice.dto.NewRegisteringClient;
 import com.julianduru.oauthservice.dto.NewRegisteringClientDto;
@@ -10,6 +11,7 @@ import com.julianduru.oauthservice.module.client.component.RegisteredClientFetch
 import com.julianduru.oauthservice.module.config.RegisteringClientConfigurer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +67,43 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<RegisteredClientDto> fetchClients(int page, int size) {
         return registeredClientFetcher.fetchClients();
+    }
+
+
+    @Override
+    public String buildLoginUrl(String clientId) {
+        var client = fetchClient(clientId);
+        return buildLoginUrl(client);
+    }
+
+
+    @Override
+    public String buildLoginUrl(RegisteredClient client) {
+        return String.format(
+            """
+            /oauth2/authorize?client_id=%s&redirect_uri=%s&scope=%s&response_type=code&response_mode=form_post&state=%s&nonce=%s
+            """,
+            client.getClientId(),
+            client.getRedirectUris().stream().findFirst().orElseThrow(
+                () -> new IllegalStateException("No Redirect URI configured for client")
+            ),
+            client.getScopes().stream().findFirst().orElseThrow(
+                () -> new IllegalStateException("No Scopes configured for client")
+            ),
+            Faker.instance().code().isbn10(false),
+            Faker.instance().code().isbn10(false)
+        ).trim();
+    }
+
+
+    @Override
+    public RegisteredClient fetchClient(String clientId) {
+        var client = clientRepository.findByClientId(clientId);
+        if (client == null) {
+            throw new IllegalArgumentException(String.format("Client ID %s not found", clientId));
+        }
+
+        return client;
     }
 
 
