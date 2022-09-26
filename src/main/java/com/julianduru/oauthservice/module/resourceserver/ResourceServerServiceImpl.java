@@ -11,6 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * created by julian on 24/04/2022
  */
@@ -33,11 +35,20 @@ public class ResourceServerServiceImpl implements ResourceServerService {
 
 
     @Override
+    public Optional<ResourceServer> fetchResourceServer(String resourceServerId) {
+        return resourceServerRepository.findByResourceServerId(resourceServerId);
+    }
+
+
+    @Override
     public Page<ResourceServer> fetchResourceServers(int page, int size) {
         return resourceServerRepository.findAll(
             PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "resourceServerId"))
         );
     }
+
+
+
 
 
 }

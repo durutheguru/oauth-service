@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>OAuth Service - Login</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- CSS Files -->
+    <link th:each="cssFile: ${cssFiles}" th:href="${cssFile}" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+<main>
+    <div class="container">
+
+        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                        <div class="d-flex justify-content-center py-4">
+                            <a href="index.html" class="logo d-flex align-items-center w-auto">
+                                <img src="/assets/img/logo.png" alt="">
+                                <span class="d-none d-lg-block">Login to OAuth Service</span>
+                            </a>
+                        </div><!-- End Logo -->
+
+                        <div class="card mb-3">
+
+                            <div class="card-body v-padding-medium">
+
+                                <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <span>Invalid username and password.</span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+
+                                <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <span th:text="${error}"></span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+
+                                <form class="row g-3 needs-validation"
+                                      novalidate
+                                      autocomplete="off"
+                                      method="post"
+                                      th:action="@{/login}">
+
+                                    <div class="col-12">
+                                        <label for="username" class="form-label">Username</label>
+                                        <div class="input-group has-validation">
+                        <span class="input-group-text" id="usernameInputGroupPrepend">
+                          <i class="bi bi-person-fill"></i>
+                        </span>
+                                            <input type="text" class="form-control" id="username"
+                                                   name="username" required>
+                                            <div class="invalid-feedback">Enter your username.</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="password" class="form-label">Password</label>
+                                        <div class="input-group has-validation">
+                        <span class="input-group-text" id="passwordInputGroupPrepend">
+                          <i class="bi bi-key-fill"></i>
+                        </span>
+                                            <input type="password" class="form-control" id="password"
+                                                   name="password" required>
+                                            <div class="invalid-feedback">Enter a password.</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 v-margin-big">
+                                        <button class="btn btn-primary w-100" type="submit">Login</button>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <p class="small mb-0">Don't have an account? <a th:href="@{/signup}">Signup</a></p>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</main><!-- End #main -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- JS Files -->
+<script th:each="jsFile: ${jsFiles}" th:src="${jsFile}"></script>
+
+</body>
+
+</html>
