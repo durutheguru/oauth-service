@@ -25,6 +25,11 @@ public class CreateResourceServerDataProvider implements DataProvider<CreateReso
                 OidcScopes.EMAIL
             )
         );
+        request.setUserAuthoritiesOnSignUp(
+            Set.of(
+                "USER", "ADMIN"
+            )
+        );
 
         return request;
     }

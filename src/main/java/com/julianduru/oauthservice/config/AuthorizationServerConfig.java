@@ -61,7 +61,8 @@ public class AuthorizationServerConfig {
             )
             .csrf(csrf -> csrf.ignoringRequestMatchers(endpointMatcher).disable())
             .formLogin()
-            .loginPage("/login.html")
+            .loginPage("/login")
+            .permitAll()
             .and()
             .apply(configurer);
 
@@ -84,7 +85,8 @@ public class AuthorizationServerConfig {
                 "/theme/**/*.css",
                 "/vendor/**/*.map",
                 "/vendor/**/*.woff*",
-                "/compiled/*"
+                "/compiled/*",
+                "/assets/**"
             )
             .permitAll()
             .and()
@@ -98,6 +100,11 @@ public class AuthorizationServerConfig {
             .and()
             .formLogin()
             .loginPage("/login")
+            .permitAll()
+            .defaultSuccessUrl("/")
+            .and()
+            .logout()
+            .permitAll()
             .and()
             .oauth2ResourceServer().jwt();
 

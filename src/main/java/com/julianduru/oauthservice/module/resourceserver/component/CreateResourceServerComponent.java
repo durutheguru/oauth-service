@@ -41,10 +41,15 @@ public class CreateResourceServerComponent {
 
         resourceServer.setResourceServerId(request.getServerId());
         resourceServer.setAllowedScopes(request.getAllowedScopes());
-        resourceServer.setUserAuthoritiesOnSignUp(request.getUserAuthoritiesOnSignUp());
+        if (!request.getUserAuthoritiesOnSignUp().isEmpty()) {
+            resourceServer.setUserAuthoritiesOnSignUp(request.getUserAuthoritiesOnSignUp());
+        }
         resourceServer.setStatus(ServerStatus.ACTIVE);
 
         return serverRepository.save(resourceServer);
     }
 
+
 }
+
+
