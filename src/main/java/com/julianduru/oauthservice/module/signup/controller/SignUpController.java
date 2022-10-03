@@ -36,7 +36,7 @@ public class SignUpController extends AnonymousUserWebController {
     public String signup(Model model, HttpServletRequest request) {
         augmentModelWithAssets(model);
         return signUpService.showUserSignUp(
-            model, request.getParameter("client_id"), request.getParameter("resource_server_id")
+            model, request.getParameter("cid"), request.getParameter("rid")
         );
     }
 
