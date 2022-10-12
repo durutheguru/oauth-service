@@ -10,7 +10,15 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * created by julian on 09/04/2022
@@ -64,6 +72,10 @@ public class AuthorizationServerConfig {
             .loginPage("/login")
             .permitAll()
             .and()
+            .logout()
+            .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID")
+            .and()
             .apply(configurer);
 
         return http.build();
@@ -104,6 +116,8 @@ public class AuthorizationServerConfig {
             .defaultSuccessUrl("/")
             .and()
             .logout()
+            .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID")
             .permitAll()
             .and()
             .oauth2ResourceServer().jwt();
