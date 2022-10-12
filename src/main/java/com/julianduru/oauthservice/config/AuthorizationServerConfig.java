@@ -45,7 +45,9 @@ public class AuthorizationServerConfig {
             )
             .authorizeRequests()
             .anyRequest().authenticated().and().httpBasic()
-            .and().cors().and().csrf().disable();
+            .and().cors()
+            .and().csrf()
+            .disable();
 
         return http.build();
     }
@@ -71,10 +73,6 @@ public class AuthorizationServerConfig {
             .formLogin()
             .loginPage("/login")
             .permitAll()
-            .and()
-            .logout()
-            .invalidateHttpSession(true)
-            .deleteCookies("JSESSIONID")
             .and()
             .apply(configurer);
 
@@ -106,7 +104,8 @@ public class AuthorizationServerConfig {
                 customizer -> customizer
                     .mvcMatchers("/**")
             )
-            .cors().and().csrf().disable()
+            .cors()
+            .disable()
             .authorizeRequests()
             .anyRequest().authenticated()
             .and()
