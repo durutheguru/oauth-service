@@ -4,7 +4,6 @@ import com.julianduru.oauthservice.dto.RegisteredClientDto;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
-import org.springframework.security.oauth2.server.authorization.config.ConfigurationSettingNames;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.util.CollectionUtils;
 
@@ -15,7 +14,7 @@ import java.util.Set;
  */
 public interface RegisteringClientConfigurer {
 
-    ClientAuthenticationMethod clientAuthenticationMethod();
+    Set<ClientAuthenticationMethod> clientAuthenticationMethods();
 
     Set<AuthorizationGrantType> authorizationGrantTypes();
 
@@ -36,7 +35,7 @@ public interface RegisteringClientConfigurer {
         }
 
         if (CollectionUtils.isEmpty(clientDto.getClientAuthenticationMethods())) {
-            clientDto.setClientAuthenticationMethods(Set.of(this.clientAuthenticationMethod()));
+            clientDto.setClientAuthenticationMethods(this.clientAuthenticationMethods());
         }
 
         if (CollectionUtils.isEmpty(clientDto.getAuthorizationGrantTypes())) {
