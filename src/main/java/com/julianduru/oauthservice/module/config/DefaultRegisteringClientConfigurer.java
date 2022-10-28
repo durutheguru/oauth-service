@@ -37,8 +37,11 @@ public class DefaultRegisteringClientConfigurer implements RegisteringClientConf
 
 
     @Override
-    public ClientAuthenticationMethod clientAuthenticationMethod() {
-        return ClientAuthenticationMethod.CLIENT_SECRET_BASIC;
+    public Set<ClientAuthenticationMethod> clientAuthenticationMethods() {
+        return Set.of(
+            ClientAuthenticationMethod.CLIENT_SECRET_POST,
+            ClientAuthenticationMethod.CLIENT_SECRET_BASIC
+        );
     }
 
     @Override

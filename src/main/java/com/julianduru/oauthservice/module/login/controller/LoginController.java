@@ -1,6 +1,7 @@
 package com.julianduru.oauthservice.module.login.controller;
 
 import com.julianduru.oauthservice.controller.web.AnonymousUserWebController;
+import com.julianduru.oauthservice.module.login.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,10 +22,15 @@ public class LoginController extends AnonymousUserWebController {
     public static final String PATH = "/login";
 
 
+    private final LoginService loginService;
+
+
     @GetMapping
     public String login(Model model, HttpServletRequest request) {
         augmentModelWithAssets(model);
-        return "login";
+        return loginService.showUserLogin(
+            model, request.getParameter("cid"), request.getParameter("rid")
+        );
     }
 
 

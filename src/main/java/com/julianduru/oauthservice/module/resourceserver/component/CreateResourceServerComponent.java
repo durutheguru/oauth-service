@@ -41,7 +41,7 @@ public class CreateResourceServerComponent {
 
         resourceServer.setResourceServerId(request.getServerId());
         resourceServer.setAllowedScopes(request.getAllowedScopes());
-        if (!request.getUserAuthoritiesOnSignUp().isEmpty()) {
+        if (request.getUserAuthoritiesOnSignUp() != null && !request.getUserAuthoritiesOnSignUp().isEmpty()) {
             resourceServer.setUserAuthoritiesOnSignUp(request.getUserAuthoritiesOnSignUp());
         }
         resourceServer.setStatus(ServerStatus.ACTIVE);
