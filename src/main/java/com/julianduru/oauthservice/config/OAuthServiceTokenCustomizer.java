@@ -9,10 +9,7 @@ import org.springframework.security.oauth2.server.authorization.token.JwtEncodin
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * created by julian on 29/05/2022
@@ -42,7 +39,7 @@ public class OAuthServiceTokenCustomizer implements OAuth2TokenCustomizer<JwtEnc
     private void addAudience(Map<String, Object> claims, JwtEncodingContext context) {
         var client = context.getRegisteredClient();
         var clientSettings = client.getClientSettings();
-        var auds = new ArrayList<>((List<String>) claims.get(JwtClaimNames.AUD));
+        var auds = new HashSet<>((List<String>) claims.get(JwtClaimNames.AUD));
 
         if (clientSettings.getSetting(AuthServerConstants.ClientTokenSettings.ALLOWED_RESOURCES) != null) {
             var allowedResourcesValue = (String)clientSettings.getSetting(

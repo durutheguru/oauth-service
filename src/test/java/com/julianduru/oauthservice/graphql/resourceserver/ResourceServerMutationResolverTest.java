@@ -55,7 +55,8 @@ public class ResourceServerMutationResolverTest extends BaseServiceIntegrationTe
                 mutation {
                     registerResourceServer(server: {
                         serverId: "%s",
-                        allowedScopes: %s
+                        allowedScopes: %s,
+                        userAuthoritiesOnSignUp: %s
                     }) {
                         id
                         resourceServerId
@@ -65,11 +66,8 @@ public class ResourceServerMutationResolverTest extends BaseServiceIntegrationTe
                 }
                 """,
                 serverRequest.getServerId(),
-                serverRequest.getAllowedScopes().toString()
-                    .replace("[", "[\"")
-                    .replace("]", "\"]")
-                    .replace(",","\",\"")
-                    .replace(" ", "")
+                prepareCollectionForGQL(serverRequest.getAllowedScopes().toString()),
+                prepareCollectionForGQL(serverRequest.getUserAuthoritiesOnSignUp().toString())
             ), "{}"
         );
 
@@ -83,12 +81,29 @@ public class ResourceServerMutationResolverTest extends BaseServiceIntegrationTe
         assertThat(
             resourceServer.get().getAllowedScopes()
             .stream().map(String::trim)
-        )
-        .containsExactlyInAnyOrder(
+        ).containsExactlyInAnyOrder(
             OidcScopes.OPENID, OidcScopes.EMAIL
+        );
+        assertThat(
+            resourceServer.get().getUserAuthoritiesOnSignUp()
+                .stream().map(String::trim)
+        ).containsExactlyInAnyOrder(
+            "USER", "ADMIN"
         );
         assertThat(resourceServer.get().getStatus()).isEqualTo(ServerStatus.ACTIVE);
     }
 
 
+    private String prepareCollectionForGQL(String collection) {
+        return collection
+            .replace("[", "[\"")
+            .replace("]", "\"]")
+            .replace(",","\",\"")
+            .replace(" ", "");
+    }
+
+
 }
+
+
+

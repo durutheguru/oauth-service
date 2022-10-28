@@ -3,7 +3,6 @@ package com.julianduru.oauthservice.module.resourceserver.component;
 import com.julianduru.oauthservice.dto.CreateResourceServerRequest;
 import com.julianduru.oauthservice.entity.ResourceServer;
 import com.julianduru.oauthservice.entity.ServerStatus;
-import com.julianduru.oauthservice.exception.RuntimeServiceException;
 import com.julianduru.oauthservice.exception.UnprocessableInputException;
 import com.julianduru.oauthservice.repository.ResourceServerRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,9 +41,15 @@ public class CreateResourceServerComponent {
 
         resourceServer.setResourceServerId(request.getServerId());
         resourceServer.setAllowedScopes(request.getAllowedScopes());
+        if (request.getUserAuthoritiesOnSignUp() != null && !request.getUserAuthoritiesOnSignUp().isEmpty()) {
+            resourceServer.setUserAuthoritiesOnSignUp(request.getUserAuthoritiesOnSignUp());
+        }
         resourceServer.setStatus(ServerStatus.ACTIVE);
 
         return serverRepository.save(resourceServer);
     }
 
+
 }
+
+

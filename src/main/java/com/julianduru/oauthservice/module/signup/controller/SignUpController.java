@@ -1,11 +1,10 @@
 package com.julianduru.oauthservice.module.signup.controller;
 
-import com.julianduru.oauthservice.AuthServerConstants;
 import com.julianduru.oauthservice.controller.web.AnonymousUserWebController;
+import com.julianduru.oauthservice.module.client.ClientService;
 import com.julianduru.oauthservice.module.signup.dto.SignUpUserDto;
 import com.julianduru.oauthservice.module.signup.service.SignUpService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,23 +28,32 @@ public class SignUpController extends AnonymousUserWebController {
     private final SignUpService signUpService;
 
 
+    private final ClientService clientService;
+
+
+
     @GetMapping
     public String signup(Model model, HttpServletRequest request) {
         augmentModelWithAssets(model);
-
-        var clientId = request.getParameter("client_id");
-        model.addAttribute("client_id", clientId);
-        model.addAttribute("user", new SignUpUserDto());
-
-        return "signup";
+        return signUpService.showUserSignUp(
+            model, request.getParameter("cid"), request.getParameter("rid")
+        );
     }
 
 
     @PostMapping
     public String signup(@ModelAttribute SignUpUserDto userDto, Model model) {
-        var signup = signUpService.signupUser(userDto);
-        return "index"; // TODO: fix this
+        try {
+            return String.format("redirect:%s", signUpService.signupUser(userDto));
+        }
+        catch (Throwable t) {
+            augmentModelWithAssets(model);
+            return signUpService.showUserSignUp(
+                model, userDto.getClientId(), userDto.getResourceServerId(), t.getMessage()
+            );
+        }
     }
 
 
 }
+

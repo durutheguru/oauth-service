@@ -44,13 +44,21 @@
 
                 <div class="card-body v-padding-medium">
 
+                  <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span th:text="${error}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+
                   <form class="row g-3 needs-validation"
                         novalidate
                         autocomplete="off"
                         method="post"
                         th:action="@{/signup}"
-                        th:object="${user}"
-                  >
+                        th:object="${user}">
+
+                    <input type="hidden" th:field="*{clientId}" th:value="${user.clientId}" />
+
+                    <input type="hidden" th:field="*{resourceServerId}" th:value="${user.resourceServerId}" />
 
                     <div class="col-12">
                       <label for="username" class="form-label">Username</label>
@@ -58,7 +66,7 @@
                         <span class="input-group-text" id="usernameInputGroupPrepend">
                           <i class="bi bi-person-fill"></i>
                         </span>
-                        <input type="text" name="username" class="form-control" id="username"
+                        <input type="text" class="form-control" id="username"
                                th:field="*{username}" required>
                         <div class="invalid-feedback">Enter your username.</div>
                       </div>
