@@ -76,6 +76,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.julianduru</groupId>
+			<artifactId>kafka-integration-lib</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-cas</artifactId>
 		</dependency>

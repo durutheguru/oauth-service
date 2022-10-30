@@ -1,7 +1,9 @@
 package com.julianduru.oauthservice.module.user.kafka.consumer;
 
-import com.julianduru.oauthservice.util.KafkaUtil;
-import com.julianduru.oauthservicelib.modules.user.dto.UserDataUpdate;
+import com.julianduru.kafkaintegrationlib.util.KafkaUtil;
+import com.julianduru.oauthservice.module.user.UserService;
+import com.julianduru.data.messaging.dto.UserDataUpdate;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -13,21 +15,27 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class OAuthServiceUserDataUpdateConsumer {
 
 
+    private final UserService userService;
+
+
+    public static final String USER_DATA_UPDATE_TOPIC = "oauth-user-data-service-logs";
+
+
     @KafkaListener(
-        topics = "oauth-service-logs",
+        topics = {USER_DATA_UPDATE_TOPIC},
         clientIdPrefix = "oauth-service",
+        groupId = "oauth-service-logs",
         containerFactory = "kafkaListenerContainerFactory"
     )
-    public void readOAuthServiceLogs(
+    public void readOAuthServiceUserDataUpdateLog(
         ConsumerRecord<String, UserDataUpdate> consumerRecord, @Payload UserDataUpdate payload
     ) {
-        log.info(
-            "Logger 1 [JSON] received key {}: Type [{}] | Payload: {} | Record: {}",
-            consumerRecord.key(), KafkaUtil.typeIdHeader(consumerRecord.headers()), payload, consumerRecord
-        );
+        KafkaUtil.logConsumerRecord(consumerRecord);
+        userService.updateUser(payload);
     }
 
 

@@ -1,5 +1,6 @@
 package com.julianduru.oauthservice.module.user;
 
+import com.julianduru.data.messaging.dto.UserDataUpdate;
 import com.julianduru.oauthservice.dto.UserDataDto;
 import com.julianduru.oauthservice.entity.UserData;
 import com.julianduru.oauthservice.exception.RuntimeServiceException;
@@ -10,7 +11,10 @@ import com.julianduru.oauthservice.exception.RuntimeServiceException;
 public interface UserService {
 
 
-    UserData saveUser(UserDataDto userDto) throws RuntimeServiceException;
+    UserData saveUser(UserDataDto userDto);
+
+
+    UserData updateUser(UserDataUpdate userDataUpdate);
 
 
 }
