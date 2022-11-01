@@ -1,9 +1,10 @@
-package com.julianduru.oauthservice;
+package com.julianduru.oauthservice.module.user.kafka.consumer;
 
 import com.julianduru.data.messaging.dto.UserDataUpdate;
+import com.julianduru.oauthservice.AuthServerConstants;
+import com.julianduru.oauthservice.BaseServiceIntegrationTest;
 import com.julianduru.oauthservice.data.UserDataProvider;
 import com.julianduru.oauthservice.data.UserDataUpdateProvider;
-import com.julianduru.oauthservice.module.user.kafka.consumer.OAuthServiceUserDataUpdateConsumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,6 @@ public class OAuthServiceUserDataUpdateConsumerTest extends BaseServiceIntegrati
         assertThat(user.getLastName()).isEqualTo(userDataUpdate.getLastName());
         assertThat(user.getAdditionalInfo().get(AuthServerConstants.UserDataUpdateAdditionalInfoKey.PROFILE_PHOTO))
             .isEqualTo(userDataUpdate.getProfilePhotoRef());
-
     }
 
 

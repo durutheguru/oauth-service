@@ -22,7 +22,7 @@ public class OAuthServiceUserDataUpdateConsumer {
     private final UserService userService;
 
 
-    public static final String USER_DATA_UPDATE_TOPIC = "oauth-user-data-service-logs";
+    public static final String USER_DATA_UPDATE_TOPIC = "oauth-user-data-update-log";
 
 
     @KafkaListener(
