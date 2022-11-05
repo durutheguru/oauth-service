@@ -45,6 +45,7 @@ services:
     networks:
       - docker-net
 
+
   oauth-service:
     depends_on:
       - mysqldb
