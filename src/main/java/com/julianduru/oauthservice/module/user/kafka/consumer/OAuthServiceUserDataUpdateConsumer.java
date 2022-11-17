@@ -25,6 +25,7 @@ public class OAuthServiceUserDataUpdateConsumer {
     public static final String USER_DATA_UPDATE_TOPIC = "oauth-user-data-update-log";
 
 
+
     @KafkaListener(
         topics = {USER_DATA_UPDATE_TOPIC},
         clientIdPrefix = "oauth-service",
