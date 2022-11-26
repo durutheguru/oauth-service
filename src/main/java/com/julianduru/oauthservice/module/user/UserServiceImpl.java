@@ -36,6 +36,12 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public UserData fetchUser(String username) {
+        return userReader.fetchUser(username);
+    }
+
+
 }
 
 

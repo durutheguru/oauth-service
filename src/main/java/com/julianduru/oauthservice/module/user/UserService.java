@@ -17,5 +17,8 @@ public interface UserService {
     UserData updateUser(UserDataUpdate userDataUpdate);
 
 
+    UserData fetchUser(String username);
+
+
 }
 
