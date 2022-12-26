@@ -8,6 +8,7 @@ import com.julianduru.oauthservice.util.MapConverter;
 import com.julianduru.security.entity.BaseEntity;
 import com.julianduru.util.JSONUtil;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 /**
  * created by julian on 28/05/2022
  */
+@Slf4j
 @Data
 @Entity
 public class UserData extends BaseEntity {
@@ -81,23 +83,40 @@ public class UserData extends BaseEntity {
     }
 
 
-    public UserDataDto dto() throws JsonProcessingException {
+    public UserDataDto dto() {
+        return dto(true);
+    }
+
+
+    public UserDataDto dto(boolean failSilently) {
         var data = new UserDataDto();
 
-        data.setUsername(getUsername());
-        data.setPassword(getPassword());
-        data.setFirstName(getFirstName());
-        data.setLastName(getLastName());
-        data.setEmail(getEmail());
-        data.setLocked(isLocked());
-        data.setCredentialsExpired(isCredentialsExpired());
-        data.setAuthorities(getAuthorities());
+        try {
 
-        if (getAdditionalInfo() != null) {
-            data.setAdditionalInfo(JSONUtil.asJsonString(getAdditionalInfo()));
+            data.setUsername(getUsername());
+            data.setPassword(getPassword());
+            data.setFirstName(getFirstName());
+            data.setLastName(getLastName());
+            data.setEmail(getEmail());
+            data.setLocked(isLocked());
+            data.setCredentialsExpired(isCredentialsExpired());
+            data.setAuthorities(getAuthorities());
+
+            if (getAdditionalInfo() != null) {
+                data.setAdditionalInfo(JSONUtil.asJsonString(getAdditionalInfo()));
+            }
+
+            return data;
         }
-
-        return data;
+        catch (JsonProcessingException e) {
+            if (failSilently) {
+                log.error(e.getMessage(), e);
+                return data;
+            }
+            else {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 

@@ -1,6 +1,7 @@
 package com.julianduru.oauthservice.module.user.controller;
 
 import com.julianduru.oauthservice.AuthServerConstants;
+import com.julianduru.oauthservice.dto.UserDataDto;
 import com.julianduru.oauthservice.entity.UserData;
 import com.julianduru.oauthservice.module.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +27,14 @@ public class UserController {
 
 
     @GetMapping
-    public UserData fetchUserDetails(@RequestParam("username") String username) {
-        return userService.fetchUser(username);
+    public UserDataDto fetchUserDetails(@RequestParam("username") String username) {
+        return userService.fetchUser(username).dto();
     }
 
 
     @GetMapping("/search")
-    public Page<UserData> searchUsers(@RequestParam("query") String query) {
-        return userService.searchUsers(query);
+    public Page<UserDataDto> searchUsers(@RequestParam("query") String query) {
+        return userService.searchUsers(query).map(UserData::dto);
     }
 
 
