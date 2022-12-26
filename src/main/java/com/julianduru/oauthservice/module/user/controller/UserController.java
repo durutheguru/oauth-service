@@ -4,6 +4,7 @@ import com.julianduru.oauthservice.AuthServerConstants;
 import com.julianduru.oauthservice.entity.UserData;
 import com.julianduru.oauthservice.module.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,12 @@ public class UserController {
     @GetMapping
     public UserData fetchUserDetails(@RequestParam("username") String username) {
         return userService.fetchUser(username);
+    }
+
+
+    @GetMapping("/search")
+    public Page<UserData> searchUsers(@RequestParam("query") String query) {
+        return userService.searchUsers(query);
     }
 
 

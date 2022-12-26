@@ -4,6 +4,7 @@ import com.julianduru.data.messaging.dto.UserDataUpdate;
 import com.julianduru.oauthservice.dto.UserDataDto;
 import com.julianduru.oauthservice.entity.UserData;
 import com.julianduru.oauthservice.exception.RuntimeServiceException;
+import org.springframework.data.domain.Page;
 
 /**
  * created by julian on 05/06/2022
@@ -18,6 +19,9 @@ public interface UserService {
 
 
     UserData fetchUser(String username);
+
+
+    Page<UserData> searchUsers(String query);
 
 
 }
