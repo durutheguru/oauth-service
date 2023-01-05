@@ -3,6 +3,8 @@ package com.julianduru.oauthservice.graphql.resourceserver;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
 import com.julianduru.oauthservice.BaseServiceIntegrationTest;
 import com.julianduru.oauthservice.data.ResourceServerDataProvider;
+import com.julianduru.oauthservice.graphql.GraphQLTemplateJwtTokenBuilder;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,7 +21,18 @@ public class ResourceServerQueryResolverTest extends BaseServiceIntegrationTest 
 
 
     @Autowired
+    private GraphQLTemplateJwtTokenBuilder jwtTokenBuilder;
+
+
+    @Autowired
     private ResourceServerDataProvider resourceServerDataProvider;
+
+
+
+    @BeforeAll
+    public void beforeClass() {
+        jwtTokenBuilder.setupTemplate(testTemplate);
+    }
 
 
     @Test
