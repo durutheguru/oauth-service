@@ -10,6 +10,7 @@ import com.julianduru.oauthservice.jooq.tables.Oauth2AuthorizationConsent;
 import com.julianduru.oauthservice.jooq.tables.Oauth2RegisteredClient;
 import com.julianduru.oauthservice.jooq.tables.ResourceServer;
 import com.julianduru.oauthservice.jooq.tables.ResourceServerAllowedScopes;
+import com.julianduru.oauthservice.jooq.tables.ResourceServerUserAuthoritiesOnSignUp;
 import com.julianduru.oauthservice.jooq.tables.UserData;
 import com.julianduru.oauthservice.jooq.tables.records.DatabasechangeloglockRecord;
 import com.julianduru.oauthservice.jooq.tables.records.Oauth2AuthorizationConsentRecord;
@@ -17,6 +18,7 @@ import com.julianduru.oauthservice.jooq.tables.records.Oauth2AuthorizationRecord
 import com.julianduru.oauthservice.jooq.tables.records.Oauth2RegisteredClientRecord;
 import com.julianduru.oauthservice.jooq.tables.records.ResourceServerAllowedScopesRecord;
 import com.julianduru.oauthservice.jooq.tables.records.ResourceServerRecord;
+import com.julianduru.oauthservice.jooq.tables.records.ResourceServerUserAuthoritiesOnSignUpRecord;
 import com.julianduru.oauthservice.jooq.tables.records.UserDataRecord;
 
 import org.jooq.ForeignKey;
@@ -53,4 +55,5 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final ForeignKey<ResourceServerAllowedScopesRecord, ResourceServerRecord> FKHF7RY24VOX7A9PO1E108JD3DG = Internal.createForeignKey(ResourceServerAllowedScopes.RESOURCE_SERVER_ALLOWED_SCOPES, DSL.name("FKhf7ry24vox7a9po1e108jd3dg"), new TableField[] { ResourceServerAllowedScopes.RESOURCE_SERVER_ALLOWED_SCOPES.RESOURCE_SERVER_ID }, Keys.KEY_RESOURCE_SERVER_PRIMARY, new TableField[] { ResourceServer.RESOURCE_SERVER.ID }, true);
+    public static final ForeignKey<ResourceServerUserAuthoritiesOnSignUpRecord, ResourceServerRecord> FKGCI54Q6HD92GHWDN0OS64FV9O = Internal.createForeignKey(ResourceServerUserAuthoritiesOnSignUp.RESOURCE_SERVER_USER_AUTHORITIES_ON_SIGN_UP, DSL.name("FKgci54q6hd92ghwdn0os64fv9o"), new TableField[] { ResourceServerUserAuthoritiesOnSignUp.RESOURCE_SERVER_USER_AUTHORITIES_ON_SIGN_UP.RESOURCE_SERVER_ID }, Keys.KEY_RESOURCE_SERVER_PRIMARY, new TableField[] { ResourceServer.RESOURCE_SERVER.ID }, true);
 }
