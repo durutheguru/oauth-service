@@ -11,6 +11,7 @@ import com.julianduru.oauthservice.jooq.tables.Oauth2AuthorizationConsent;
 import com.julianduru.oauthservice.jooq.tables.Oauth2RegisteredClient;
 import com.julianduru.oauthservice.jooq.tables.ResourceServer;
 import com.julianduru.oauthservice.jooq.tables.ResourceServerAllowedScopes;
+import com.julianduru.oauthservice.jooq.tables.ResourceServerUserAuthoritiesOnSignUp;
 import com.julianduru.oauthservice.jooq.tables.UserData;
 
 
@@ -54,6 +55,11 @@ public class Tables {
      * The table <code>oauth_service.resource_server_allowed_scopes</code>.
      */
     public static final ResourceServerAllowedScopes RESOURCE_SERVER_ALLOWED_SCOPES = ResourceServerAllowedScopes.RESOURCE_SERVER_ALLOWED_SCOPES;
+
+    /**
+     * The table <code>oauth_service.resource_server_user_authorities_on_sign_up</code>.
+     */
+    public static final ResourceServerUserAuthoritiesOnSignUp RESOURCE_SERVER_USER_AUTHORITIES_ON_SIGN_UP = ResourceServerUserAuthoritiesOnSignUp.RESOURCE_SERVER_USER_AUTHORITIES_ON_SIGN_UP;
 
     /**
      * The table <code>oauth_service.user_data</code>.

@@ -59,6 +59,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>com.julianduru</groupId>
 			<artifactId>security-lib</artifactId>
 			<version>0.10.0-SNAPSHOT</version>
@@ -68,6 +73,12 @@
 			<groupId>com.julianduru</groupId>
 			<artifactId>util-lib</artifactId>
 			<version>0.16.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.julianduru</groupId>
+			<artifactId>kafka-integration-lib</artifactId>
+			<version>0.2.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -151,6 +162,12 @@
 			<groupId>com.graphql-java-kickstart</groupId>
 			<artifactId>graphql-spring-boot-starter-test</artifactId>
 			<version>11.1.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
@@ -346,5 +363,6 @@
 	</build>
 
 </project>
+
 
 
