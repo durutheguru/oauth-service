@@ -41,6 +41,13 @@ public interface AuthServerConstants {
     }
 
 
+    interface UserDataUpdateAdditionalInfoKey {
+
+        String PROFILE_PHOTO = "profile_photo";
+
+    }
+
+
 }
 
 

@@ -3,7 +3,10 @@ package com.julianduru.oauthservice.graphql.resourceserver;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
 import com.julianduru.oauthservice.BaseServiceIntegrationTest;
 import com.julianduru.oauthservice.data.ResourceServerDataProvider;
+import com.julianduru.oauthservice.graphql.GraphQLTemplateJwtTokenBuilder;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,6 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * created by julian on 25/04/2022
  */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ResourceServerQueryResolverTest extends BaseServiceIntegrationTest {
 
 
@@ -19,7 +23,18 @@ public class ResourceServerQueryResolverTest extends BaseServiceIntegrationTest 
 
 
     @Autowired
+    private GraphQLTemplateJwtTokenBuilder jwtTokenBuilder;
+
+
+    @Autowired
     private ResourceServerDataProvider resourceServerDataProvider;
+
+
+
+    @BeforeAll
+    public void beforeClass() {
+        jwtTokenBuilder.setupTemplate(testTemplate);
+    }
 
 
     @Test
