@@ -32,9 +32,9 @@ public class UserControllerTest extends BaseControllerTest {
         var user2 = new UserData();
         var user3 = new UserData();
 
-        user1.setFirstName("Johnny");
-        user2.setLastName("Johnny");
-        user3.setUsername("johnny");
+        user1.setFirstName("JohnnyB");
+        user2.setLastName("JohnnyB");
+        user3.setUsername("johnnyB");
 
         userDataProvider.save(user1, user2, user3);
         userDataProvider.save(10);
