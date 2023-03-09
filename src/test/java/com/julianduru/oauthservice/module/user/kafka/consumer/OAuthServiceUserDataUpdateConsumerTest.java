@@ -42,15 +42,7 @@ public class OAuthServiceUserDataUpdateConsumerTest extends BaseServiceIntegrati
         userDataUpdate.setLastName(user.getLastName() + " Update");
         userDataUpdate = userDataUpdateProvider.provide(userDataUpdate);
 
-        userDataUpdateConsumer.readOAuthServiceUserDataUpdateLog(
-            new ConsumerRecord<>(
-                OAuthServiceUserDataUpdateConsumer.USER_DATA_UPDATE_TOPIC,
-                0, 0, UUID.randomUUID().toString(),
-                userDataUpdate
-            ),
-
-            userDataUpdate
-        );
+        userDataUpdateConsumer.readOAuthServiceUserDataUpdateLog(userDataUpdate);
 
         user = userDataProvider.getRepository().findById(user.getId()).get();
 

@@ -9,9 +9,12 @@ import com.julianduru.oauthservice.jooq.tables.Databasechangeloglock;
 import com.julianduru.oauthservice.jooq.tables.Oauth2Authorization;
 import com.julianduru.oauthservice.jooq.tables.Oauth2AuthorizationConsent;
 import com.julianduru.oauthservice.jooq.tables.Oauth2RegisteredClient;
+import com.julianduru.oauthservice.jooq.tables.QueueIncomingMessage;
+import com.julianduru.oauthservice.jooq.tables.QueueOutgoingMessage;
 import com.julianduru.oauthservice.jooq.tables.ResourceServer;
 import com.julianduru.oauthservice.jooq.tables.ResourceServerAllowedScopes;
 import com.julianduru.oauthservice.jooq.tables.ResourceServerUserAuthoritiesOnSignUp;
+import com.julianduru.oauthservice.jooq.tables.Shedlock;
 import com.julianduru.oauthservice.jooq.tables.UserData;
 
 
@@ -47,6 +50,16 @@ public class Tables {
     public static final Oauth2RegisteredClient OAUTH2_REGISTERED_CLIENT = Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT;
 
     /**
+     * The table <code>oauth_service.queue_incoming_message</code>.
+     */
+    public static final QueueIncomingMessage QUEUE_INCOMING_MESSAGE = QueueIncomingMessage.QUEUE_INCOMING_MESSAGE;
+
+    /**
+     * The table <code>oauth_service.queue_outgoing_message</code>.
+     */
+    public static final QueueOutgoingMessage QUEUE_OUTGOING_MESSAGE = QueueOutgoingMessage.QUEUE_OUTGOING_MESSAGE;
+
+    /**
      * The table <code>oauth_service.resource_server</code>.
      */
     public static final ResourceServer RESOURCE_SERVER = ResourceServer.RESOURCE_SERVER;
@@ -60,6 +73,11 @@ public class Tables {
      * The table <code>oauth_service.resource_server_user_authorities_on_sign_up</code>.
      */
     public static final ResourceServerUserAuthoritiesOnSignUp RESOURCE_SERVER_USER_AUTHORITIES_ON_SIGN_UP = ResourceServerUserAuthoritiesOnSignUp.RESOURCE_SERVER_USER_AUTHORITIES_ON_SIGN_UP;
+
+    /**
+     * The table <code>oauth_service.shedlock</code>.
+     */
+    public static final Shedlock SHEDLOCK = Shedlock.SHEDLOCK;
 
     /**
      * The table <code>oauth_service.user_data</code>.

@@ -77,9 +77,16 @@
 
 		<dependency>
 			<groupId>com.julianduru</groupId>
-			<artifactId>kafka-integration-lib</artifactId>
-			<version>0.2.0-SNAPSHOT</version>
+			<artifactId>queue-integration-lib</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
+		<dependency>
+			<groupId>net.javacrumbs.shedlock</groupId>
+			<artifactId>shedlock-provider-jdbc-template</artifactId>
+			<version>5.1.0</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -335,7 +342,7 @@
 						<goals>
 							<goal>install-node-and-npm</goal>
 						</goals>
-						<phase>generate-resources</phase>
+						<phase>package</phase>
 						<configuration>
 							<nodeVersion>v14.18.1</nodeVersion>
 							<npmVersion>6.14.15</npmVersion>
@@ -346,14 +353,14 @@
 						<goals>
 							<goal>npm</goal>
 						</goals>
-						<phase>generate-resources</phase>
+						<phase>package</phase>
 					</execution>
 					<execution>
 						<id>gulp build</id>
 						<goals>
 							<goal>gulp</goal>
 						</goals>
-						<phase>generate-resources</phase>
+						<phase>package</phase>
 					</execution>
 				</executions>
 			</plugin>

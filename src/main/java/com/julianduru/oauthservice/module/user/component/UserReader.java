@@ -20,7 +20,7 @@ public class UserReader {
     private final UserDataRepository userDataRepository;
 
 
-    @Value("${code.config.search.page-size:1000}")
+    @Value("${code.config.search.page-size:100}")
     private Integer userSearchPageSize;
 
 

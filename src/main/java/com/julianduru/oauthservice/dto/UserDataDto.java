@@ -10,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Map;
 
 /**
  * created by julian on 05/06/2022
@@ -46,7 +47,7 @@ public class UserDataDto {
     private List<String> authorities;
 
 
-    private String additionalInfo;
+    private Map<String, String> additionalInfo;
 
 
     private boolean locked;
@@ -71,10 +72,7 @@ public class UserDataDto {
         data.setLocked(isLocked());
         data.setAuthorities(getAuthorities());
         data.setCredentialsExpired(isCredentialsExpired());
-
-        if (StringUtils.hasText(getAdditionalInfo())) {
-            data.setAdditionalInfo(JSONUtil.readJSONMap(getAdditionalInfo()));
-        }
+        data.setAdditionalInfo(getAdditionalInfo());
 
         return data;
     }

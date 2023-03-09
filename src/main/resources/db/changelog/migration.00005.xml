@@ -1,0 +1,63 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+
+    <changeSet author="dduru (generated)" id="1677790741504-1">
+        <createTable tableName="queue_incoming_message">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="queue_incoming_messagePK"/>
+            </column>
+            <column name="header" type="TEXT"/>
+            <column name="payload" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processing_status" type="INT"/>
+            <column name="processing_status_message" type="VARCHAR(255)"/>
+            <column name="reference" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="topic" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="dduru (generated)" id="1677790741504-2">
+        <createTable tableName="queue_outgoing_message">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="queue_outgoing_messagePK"/>
+            </column>
+            <column name="auth_role_id" type="VARCHAR(100)"/>
+            <column name="auth_username" type="VARCHAR(100)"/>
+            <column name="time_added" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_updated" type="VARCHAR(255)"/>
+            <column name="header" type="TEXT"/>
+            <column name="payload" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processing_status" type="INT"/>
+            <column name="processing_status_message" type="VARCHAR(255)"/>
+            <column name="reference" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="topic" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="dduru (generated)" id="1677790741504-3">
+        <addUniqueConstraint columnNames="reference" constraintName="UC_QUEUE_INCOMING_MESSAGEREFERENCE_COL" tableName="queue_incoming_message"/>
+    </changeSet>
+    <changeSet author="dduru (generated)" id="1677790741504-4">
+        <addUniqueConstraint columnNames="reference" constraintName="UC_QUEUE_OUTGOING_MESSAGEREFERENCE_COL" tableName="queue_outgoing_message"/>
+    </changeSet>
+</databaseChangeLog>

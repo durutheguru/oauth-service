@@ -1,19 +1,15 @@
 package com.julianduru.oauthservice.entity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.julianduru.oauthservice.AuthServerConstants;
 import com.julianduru.oauthservice.dto.UserDataDto;
 import com.julianduru.oauthservice.util.ListConverter;
 import com.julianduru.oauthservice.util.MapConverter;
 import com.julianduru.security.entity.BaseEntity;
-import com.julianduru.util.JSONUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -89,34 +85,22 @@ public class UserData extends BaseEntity {
 
 
     public UserDataDto dto(boolean failSilently) {
-        var data = new UserDataDto();
+        var dto = new UserDataDto();
 
-        try {
+        dto.setUsername(getUsername());
+        dto.setPassword(getPassword());
+        dto.setFirstName(getFirstName());
+        dto.setLastName(getLastName());
+        dto.setEmail(getEmail());
+        dto.setLocked(isLocked());
+        dto.setCredentialsExpired(isCredentialsExpired());
+        dto.setAuthorities(getAuthorities());
 
-            data.setUsername(getUsername());
-            data.setPassword(getPassword());
-            data.setFirstName(getFirstName());
-            data.setLastName(getLastName());
-            data.setEmail(getEmail());
-            data.setLocked(isLocked());
-            data.setCredentialsExpired(isCredentialsExpired());
-            data.setAuthorities(getAuthorities());
-
-            if (getAdditionalInfo() != null) {
-                data.setAdditionalInfo(JSONUtil.asJsonString(getAdditionalInfo()));
-            }
-
-            return data;
+        if (getAdditionalInfo() != null) {
+            dto.setAdditionalInfo(getAdditionalInfo());
         }
-        catch (JsonProcessingException e) {
-            if (failSilently) {
-                log.error(e.getMessage(), e);
-                return data;
-            }
-            else {
-                throw new RuntimeException(e);
-            }
-        }
+
+        return dto;
     }
 
 

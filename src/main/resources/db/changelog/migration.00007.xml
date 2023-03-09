@@ -1,0 +1,49 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="dduru (generated)" id="1677965820582-1">
+        <addColumn tableName="queue_incoming_message">
+            <column name="treat_immediately" type="bit" />
+        </addColumn>
+    </changeSet>
+    <changeSet author="dduru (generated)" id="1677965820582-2">
+        <addColumn tableName="queue_outgoing_message">
+            <column name="treat_immediately" type="bit" />
+        </addColumn>
+    </changeSet>
+    <changeSet author="dduru (generated)" id="1677965820582-3">
+        <dropColumn columnName="auth_role_id" tableName="queue_outgoing_message"/>
+    </changeSet>
+    <changeSet author="dduru (generated)" id="1677965820582-4">
+        <dropColumn columnName="auth_username" tableName="queue_outgoing_message"/>
+    </changeSet>
+
+    <changeSet author="dduru (generated)" id="1677966694985-1">
+        <addColumn tableName="queue_incoming_message">
+            <column name="time_added" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="dduru (generated)" id="1677966694985-2">
+        <addColumn tableName="queue_incoming_message">
+            <column name="time_updated" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet id="138198917848" author="dduru">
+        <modifyDataType
+                tableName="queue_outgoing_message"
+                columnName="processing_status_message"
+                newDataType="TEXT" />
+    </changeSet>
+
+    <changeSet id="138198917849" author="dduru">
+        <modifyDataType
+                tableName="queue_incoming_message"
+                columnName="processing_status_message"
+                newDataType="TEXT" />
+    </changeSet>
+
+</databaseChangeLog>
